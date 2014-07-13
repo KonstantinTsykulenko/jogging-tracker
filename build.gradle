@@ -10,9 +10,14 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 
+allprojects {
+    targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+}
+
 jar {
     baseName = 'jogging-tracker'
-    version =  '0.1.0'
+    version = '0.1.0'
 }
 
 repositories {

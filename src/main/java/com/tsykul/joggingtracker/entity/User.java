@@ -1,5 +1,7 @@
 package com.tsykul.joggingtracker.entity;
 
+import org.hibernate.validator.constraints.Email;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,22 +16,23 @@ import javax.validation.constraints.Size;
 public class User {
 
     @Id
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name = "email", nullable = false, updatable = false)
+    @Email
     @NotNull
     @Size(max = 64)
-    private String id;
+    private String email;
 
     @Column(name = "password", nullable = false)
     @NotNull
     @Size(max = 64)
     private String password;
 
-    public String getId() {
-        return id;
+    public String getEmail() {
+        return email;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
