@@ -17,12 +17,8 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 
-    private UserService userService;
-
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private UserService userService;
 
     @RequestMapping(value = "/user",
             method = RequestMethod.POST,
@@ -30,6 +26,11 @@ public class UserController {
             produces = "application/json")
     public User createUser(@RequestBody @Valid User user) {
         return userService.saveUser(user);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String test() {
+        return "test";
     }
 
     @ExceptionHandler

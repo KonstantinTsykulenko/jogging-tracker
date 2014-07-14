@@ -1,18 +1,21 @@
 package com.tsykul.joggingtracker;
 
 import com.tsykul.joggingtracker.conf.SSLServerProperties;
+import com.tsykul.joggingtracker.conf.WebSecurityConfig;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.util.Assert;
 
 /**
@@ -20,13 +23,14 @@ import org.springframework.util.Assert;
  * @since 7/13/2014.
  */
 @Configuration
-@EnableAutoConfiguration
+@EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @ComponentScan("com.tsykul.joggingtracker")
 @EnableConfigurationProperties(SSLServerProperties.class)
+@Import(WebSecurityConfig.class)
 public class JoggingTrackerRunner {
 
     public static void main(String[] args) {
-        SpringApplication.run(JoggingTrackerRunner.class, args);
+        SpringApplication.run(new Object[]{JoggingTrackerRunner.class}, args);
     }
 
     @Bean

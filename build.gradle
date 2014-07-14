@@ -15,6 +15,10 @@ allprojects {
     sourceCompatibility = 1.8
 }
 
+applicationDefaultJvmArgs = [
+    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7777"
+]
+
 jar {
     baseName = 'jogging-tracker'
     version = '0.1.0'
@@ -31,6 +35,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-jetty")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("org.springframework.boot:spring-boot-starter-actuator")
+
+    compile 'org.springframework.security:spring-security-web:3.2.4.RELEASE'
+    compile 'org.springframework.security:spring-security-config:3.2.4.RELEASE'
 
     compile('org.hibernate:hibernate-validator')
     compile('org.hsqldb:hsqldb')
