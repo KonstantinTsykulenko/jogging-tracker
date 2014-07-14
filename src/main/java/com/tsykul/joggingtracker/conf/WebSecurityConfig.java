@@ -32,12 +32,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
+                .logout().disable();
+        http
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/jogging").authenticated()
                 .antMatchers("/user").permitAll()
-                .antMatchers("/login").permitAll();
+                .antMatchers("/login").permitAll()
+                .antMatchers("/logout").permitAll()
+                .anyRequest().authenticated();
     }
 
     @Override

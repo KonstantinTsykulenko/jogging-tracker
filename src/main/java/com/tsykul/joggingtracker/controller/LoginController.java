@@ -34,4 +34,10 @@ public class LoginController {
         httpServletRequest.getSession().setAttribute("securityToken", token);
         return new SecurityToken(token);
     }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public String logout(HttpServletRequest httpServletRequest) {
+        httpServletRequest.getSession().removeAttribute("securityToken");
+        return "logout";
+    }
 }
