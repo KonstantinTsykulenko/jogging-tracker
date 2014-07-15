@@ -36,6 +36,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
+    public void removeUser(User user) {
+        repository.delete(user);
+    }
+
+    @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repository.findOne(username);
         if (user == null) {

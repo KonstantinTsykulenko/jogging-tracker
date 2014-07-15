@@ -1,7 +1,7 @@
 package com.tsykul.joggingtracker.controller;
 
 import com.tsykul.joggingtracker.model.Credentials;
-import com.tsykul.joggingtracker.model.LogoutResponse;
+import com.tsykul.joggingtracker.model.ResponseStatus;
 import com.tsykul.joggingtracker.model.SecurityToken;
 import com.tsykul.joggingtracker.security.TokenUtils;
 import com.tsykul.joggingtracker.service.UserService;
@@ -42,8 +42,8 @@ public class LoginController {
     @RequestMapping(value = "/logout",
             method = RequestMethod.POST,
             produces = "application/json")
-    public LogoutResponse logout(HttpServletRequest httpServletRequest) {
+    public ResponseStatus logout(HttpServletRequest httpServletRequest) {
         httpServletRequest.getSession().removeAttribute("securityToken");
-        return new LogoutResponse(LogoutResponse.LogoutStatus.SUCCESS);
+        return new ResponseStatus(ResponseStatus.Status.SUCCESS);
     }
 }

@@ -4,18 +4,18 @@ package com.tsykul.joggingtracker.model;
  * @author KonstantinTsykulenko
  * @since 7/15/2014.
  */
-public class LogoutResponse {
-    public enum LogoutStatus {
+public class ResponseStatus {
+    public enum Status {
         SUCCESS, FAILURE
     }
 
-    private LogoutStatus status;
+    private Status status;
 
-    public LogoutResponse(LogoutStatus status) {
+    public ResponseStatus(Status status) {
         this.status = status;
     }
 
-    public LogoutStatus getStatus() {
+    public Status getStatus() {
         return status;
     }
 }

@@ -9,6 +9,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
+apply plugin: 'groovy'
 
 allprojects {
     targetCompatibility = 1.8
@@ -42,7 +43,11 @@ dependencies {
     compile('org.hibernate:hibernate-validator')
     compile('org.hsqldb:hsqldb')
 
-    testCompile("junit:junit")
+    testCompile("org.codehaus.groovy:groovy-all:2.2.0")
+    testCompile("com.fasterxml.jackson.core:jackson-databind")
+    testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
+    testCompile("org.codehaus.groovy.modules.http-builder:http-builder:0.7+")
+    testCompile("net.sf.json-lib:json-lib:2.4+")
 }
 
 task wrapper(type: Wrapper) {
