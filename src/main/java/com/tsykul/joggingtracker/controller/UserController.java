@@ -28,11 +28,6 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.GET)
-    public String test() {
-        return "test";
-    }
-
     @ExceptionHandler
     @ResponseStatus(HttpStatus.CONFLICT)
     public ExceptionModel handleUserAlreadyExistsException(UserExistsException e) {
