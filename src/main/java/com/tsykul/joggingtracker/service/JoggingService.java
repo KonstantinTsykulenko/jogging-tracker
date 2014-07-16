@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -29,10 +30,16 @@ public class JoggingService {
                 savedRecord.getDistance());
     }
 
+    @Transactional
     public List<JogRecordModel> findByUserId(String userId) {
         List<JogRecord> jogRecords = repository.findByUserId(userId);
         return jogRecords.stream().map(record -> new JogRecordModel(record.getDate(),
                 record.getDuration(),
                 record.getDistance())).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<Object[]> getReport(String userId) {
+        return repository.getWeeklyUserReport(userId);
     }
 }

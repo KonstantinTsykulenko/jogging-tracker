@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author KonstantinTsykulenko
@@ -38,6 +39,13 @@ public class JoggingController {
             produces = "application/json")
     public List<JogRecordModel> getJogRecords() {
         return service.findByUserId(getUser().getEmail());
+    }
+
+    @RequestMapping(value = "/jogRecord/report",
+            method = RequestMethod.GET,
+            produces = "application/json")
+    public List<Object[]> getReport() {
+        return service.getReport(getUser().getEmail());
     }
 
     private User getUser() {
