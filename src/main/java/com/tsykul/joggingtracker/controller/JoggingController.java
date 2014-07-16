@@ -1,8 +1,12 @@
 package com.tsykul.joggingtracker.controller;
 
 import com.tsykul.joggingtracker.entity.JogRecord;
-import com.tsykul.joggingtracker.repository.JogRecordRepository;
+import com.tsykul.joggingtracker.entity.User;
+import com.tsykul.joggingtracker.model.JogRecordModel;
+import com.tsykul.joggingtracker.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,20 +22,26 @@ import java.util.List;
 public class JoggingController {
 
     @Autowired
-    private JogRecordRepository repository;
+    private JoggingService service;
 
     @RequestMapping(value = "/jogRecord",
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public JogRecord addJogRecord(@RequestBody JogRecord jogRecord) {
-        return repository.save(jogRecord);
+    public JogRecordModel addJogRecord(@RequestBody JogRecord jogRecord) {
+        jogRecord.setUser(getUser());
+        return service.saveJogRecord(jogRecord);
     }
 
     @RequestMapping(value = "/jogRecord",
             method = RequestMethod.GET,
             produces = "application/json")
-    public List<JogRecord> getJogRecords() {
-        return repository.findAll();
+    public List<JogRecordModel> getJogRecords() {
+        return service.findByUserId(getUser().getEmail());
+    }
+
+    private User getUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return (User) authentication.getPrincipal();
     }
 }

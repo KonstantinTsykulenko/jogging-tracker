@@ -4,32 +4,36 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author KonstantinTsykulenko
  * @since 7/13/2014.
  */
 @Entity
+@Table(name = "jt_user")
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "email", nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false)
     @Email
     @NotNull
     @Size(max = 64)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     @NotNull
     @Size(max = 64)
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+//    @JoinColumn(name = "user_id")
+    private List<JogRecord> jogRecords;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -75,5 +79,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public List<JogRecord> getJogRecords() {
+        return jogRecords;
+    }
+
+    public void setJogRecords(List<JogRecord> jogRecords) {
+        this.jogRecords = jogRecords;
     }
 }

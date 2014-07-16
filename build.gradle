@@ -42,6 +42,7 @@ dependencies {
 
     compile('org.hibernate:hibernate-validator')
     compile('org.hsqldb:hsqldb')
+    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
 
     testCompile("org.codehaus.groovy:groovy-all:2.2.0")
     testCompile("com.fasterxml.jackson.core:jackson-databind")
