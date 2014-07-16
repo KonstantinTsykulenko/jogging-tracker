@@ -1,6 +1,7 @@
 package com.tsykul.joggingtracker.test.functional
 
 import groovyx.net.http.RESTClient
+import spock.lang.Shared
 import spock.lang.Specification
 import spock.lang.Stepwise
 
@@ -8,14 +9,18 @@ import spock.lang.Stepwise
  * @author KonstantinTsykulenko
  * @since 7/15/2014.
  */
-//@Stepwise
-class UserRegistrationTest extends Specification {
+@Stepwise
+class APITest extends Specification {
+
+    @Shared
+    def appEndpoint = new RESTClient('http://localhost:9090/')
+    @Shared
+    def userData = [email: 'test6@gmaiil.com', password: 'password']
+
     def "Should be able to register a user"() {
         given:
-            def appEndpoint = new RESTClient('http://localhost:9090/')
-        when:
-            def userData = [email: 'test@gmaiil.com', password: 'password']
             def req = [path: 'user', requestContentType: 'application/json', body: userData]
+        when:
             def resp = appEndpoint.post(req)
         then:
             with(resp) {
@@ -23,15 +28,12 @@ class UserRegistrationTest extends Specification {
                 contentType == "application/json"
                 data == userData
             }
-        //cleanup:
-            //appEndpoint.post([path: 'user/delete', requestContentType: 'application/json', body: userData])
     }
 
     def "Should be able to add jog records"() {
         given:
             def appEndpoint = new RESTClient('http://localhost:9090/')
         when:
-            def userData = [email: 'test@gmail.com', password: 'password']
             def loginRequest = [path: 'login', requestContentType: 'application/json', body: userData]
             def loginResponse = appEndpoint.post(loginRequest)
             def token = loginResponse.data.token
@@ -51,5 +53,9 @@ class UserRegistrationTest extends Specification {
             ['date': '2014-06-20T20:44:55', 'distance': 150, 'duration': 15] | _
             ['date': '2014-06-28T20:44:55', 'distance': 150, 'duration': 15] | _
             ['date': '2014-06-30T20:44:55', 'distance': 150, 'duration': 15] | _
+    }
+
+    def cleanupSpec() {
+        appEndpoint.post([path: 'user/delete', requestContentType: 'application/json', body: userData])
     }
 }

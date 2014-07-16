@@ -34,8 +34,8 @@ public class UserController {
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public com.tsykul.joggingtracker.model.ResponseStatus deleteUser(@RequestBody @Valid User user) {
-        userService.removeUser(user);
+    public com.tsykul.joggingtracker.model.ResponseStatus deleteUser(@RequestBody @Valid Credentials credentials) {
+        userService.removeUser(credentials);
         return new com.tsykul.joggingtracker.model.ResponseStatus(com.tsykul.joggingtracker.model.ResponseStatus.Status.SUCCESS);
     }
 

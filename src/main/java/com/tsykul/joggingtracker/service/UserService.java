@@ -1,6 +1,7 @@
 package com.tsykul.joggingtracker.service;
 
 import com.tsykul.joggingtracker.entity.User;
+import com.tsykul.joggingtracker.model.Credentials;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 /**
@@ -10,5 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     User saveUser(User user);
 
-    public void removeUser(User user);
+    public void removeUser(Credentials user);
 }
