@@ -31,7 +31,7 @@ public class User implements UserDetails {
     @Size(max = 64)
     private String password;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<JogRecord> jogRecords;
 
     @Override
