@@ -2,11 +2,13 @@ package com.tsykul.joggingtracker.service;
 
 import com.tsykul.joggingtracker.entity.JogRecord;
 import com.tsykul.joggingtracker.model.JogRecordModel;
+import com.tsykul.joggingtracker.model.JoggingReportModel;
 import com.tsykul.joggingtracker.repository.JogRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -39,7 +41,10 @@ public class JoggingService {
     }
 
     @Transactional
-    public List<Object[]> getReport(String userId) {
-        return repository.getWeeklyUserReport(userId);
+    public List<JoggingReportModel> getReport(String userId) {
+        List<Object[]> weeklyUserReport = repository.getWeeklyUserReport(userId);
+        return weeklyUserReport.stream().map(val ->
+                new JoggingReportModel((BigDecimal ) val[0], (BigDecimal) val[1], (String) val[2])).
+                collect(Collectors.toList());
     }
 }

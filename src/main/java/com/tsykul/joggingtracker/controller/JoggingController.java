@@ -3,6 +3,7 @@ package com.tsykul.joggingtracker.controller;
 import com.tsykul.joggingtracker.entity.JogRecord;
 import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.model.JogRecordModel;
+import com.tsykul.joggingtracker.model.JoggingReportModel;
 import com.tsykul.joggingtracker.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -44,7 +45,7 @@ public class JoggingController {
     @RequestMapping(value = "/jogRecord/report",
             method = RequestMethod.GET,
             produces = "application/json")
-    public List<Object[]> getReport() {
+    public List<JoggingReportModel> getReport() {
         return service.getReport(getUser().getEmail());
     }
 
