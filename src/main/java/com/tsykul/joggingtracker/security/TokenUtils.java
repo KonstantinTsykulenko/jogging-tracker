@@ -7,7 +7,11 @@ import java.util.UUID;
  * @author KonstantinTsykulenko
  * @since 7/14/2014.
  */
-public class TokenUtils {
+public final class TokenUtils {
+
+    private TokenUtils() {
+    }
+
     public static String createToken(String username) {
         String rawToken = username + ":" + UUID.randomUUID();
         return new String(Base64.getEncoder().encode(rawToken.getBytes()));

@@ -15,7 +15,9 @@ class APITest extends Specification {
     @Shared
     def appEndpoint = new RESTClient('http://localhost:9090/')
     @Shared
-    def userData = [email: 'test6@gmaiil.com', password: 'password']
+    def userData = [email: 'test11@gmaiil.com', password: 'password']
+    @Shared
+    def token
 
     def "Should be able to register a user"() {
         given:
@@ -30,15 +32,17 @@ class APITest extends Specification {
             }
     }
 
-    def "Should be able to add jog records"() {
+    def "Should be able to login"() {
         given:
-            def appEndpoint = new RESTClient('http://localhost:9090/')
-        when:
             def loginRequest = [path: 'login', requestContentType: 'application/json', body: userData]
+        when:
             def loginResponse = appEndpoint.post(loginRequest)
-            def token = loginResponse.data.token
+            token = loginResponse.data.token
         then:
             token != null
+    }
+
+    def "Should be able to add jog records"() {
         expect:
             appEndpoint.post([path: 'jogRecord', requestContentType: 'application/json', body: record, 'headers': ['Auth-Token': token]])
         where:
@@ -55,7 +59,10 @@ class APITest extends Specification {
             ['date': '2014-06-30T20:44:55', 'distance': 150, 'duration': 15] | _
     }
 
-    def cleanupSpec() {
-        appEndpoint.post([path: 'user/delete', requestContentType: 'application/json', body: userData])
+    def "Should be able to delete user"() {
+        when:
+            def resp = appEndpoint.delete([path: 'user', requestContentType: 'application/json', 'headers': ['Auth-Token': token]])
+        then:
+            resp.data.status == "SUCCESS"
     }
 }

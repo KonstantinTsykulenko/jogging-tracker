@@ -2,14 +2,12 @@ package com.tsykul.joggingtracker.service;
 
 import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.exception.UserExistsException;
-import com.tsykul.joggingtracker.model.Credentials;
 import com.tsykul.joggingtracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 
 /**
@@ -38,8 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void removeUser(Credentials credentials) {
-        User user = repository.findOne(credentials.getEmail());
+    public void removeUser(User user) {
         repository.delete(user);
     }
 

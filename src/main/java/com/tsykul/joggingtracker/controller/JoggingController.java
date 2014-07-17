@@ -4,6 +4,7 @@ import com.tsykul.joggingtracker.entity.JogRecord;
 import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.model.JogRecordModel;
 import com.tsykul.joggingtracker.model.JoggingReportModel;
+import com.tsykul.joggingtracker.security.UserUtil;
 import com.tsykul.joggingtracker.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,7 @@ public class JoggingController {
             consumes = "application/json",
             produces = "application/json")
     public JogRecordModel addJogRecord(@RequestBody JogRecord jogRecord) {
-        jogRecord.setUser(getUser());
+        jogRecord.setUser(UserUtil.getUser());
         return service.saveJogRecord(jogRecord);
     }
 
@@ -38,18 +39,13 @@ public class JoggingController {
             method = RequestMethod.GET,
             produces = "application/json")
     public List<JogRecordModel> getJogRecords() {
-        return service.findByUserId(getUser().getEmail());
+        return service.findByUserId(UserUtil.getUser().getEmail());
     }
 
     @RequestMapping(value = "/jogRecord/report",
             method = RequestMethod.GET,
             produces = "application/json")
     public List<JoggingReportModel> getReport() {
-        return service.getReport(getUser().getEmail());
-    }
-
-    private User getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+        return service.getReport(UserUtil.getUser().getEmail());
     }
 }

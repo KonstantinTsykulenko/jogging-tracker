@@ -11,5 +11,5 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 public interface UserService extends UserDetailsService {
     User saveUser(User user);
 
-    public void removeUser(Credentials user);
+    public void removeUser(User user);
 }

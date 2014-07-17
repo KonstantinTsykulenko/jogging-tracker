@@ -5,6 +5,7 @@ import com.tsykul.joggingtracker.exception.UserExistsException;
 import com.tsykul.joggingtracker.model.Credentials;
 import com.tsykul.joggingtracker.model.ExceptionModel;
 import com.tsykul.joggingtracker.model.ResponseStatus;
+import com.tsykul.joggingtracker.security.UserUtil;
 import com.tsykul.joggingtracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,12 +32,11 @@ public class UserController {
         return new Credentials(savedUser.getEmail(), savedUser.getPassword());
     }
 
-    @RequestMapping(value = "/user/delete",
-            method = RequestMethod.POST,
-            consumes = "application/json",
+    @RequestMapping(value = "/user",
+            method = RequestMethod.DELETE,
             produces = "application/json")
-    public ResponseStatus deleteUser(@RequestBody @Valid Credentials credentials) {
-        userService.removeUser(credentials);
+    public ResponseStatus deleteUser() {
+        userService.removeUser(UserUtil.getUser());
         return new ResponseStatus(ResponseStatus.Status.SUCCESS);
     }
 
