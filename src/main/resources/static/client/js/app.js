@@ -1,14 +1,31 @@
 var joggingApp = angular.module('joggingApp', ['ngRoute'])
-    .controller('LoginController', function ($scope, $routeParams, $location, $http) {
+    .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
         $scope.credentials = {}
         $scope.login = function (roomId) {
-            $http.post("http://localhost:9090/login", $scope.credentials)
-            $location.path('/joggingList')
-            //$scope.$apply()
+            var loginPromise = $http.post("http://localhost:9090/login", $scope.credentials)
+
+            loginPromise.success(function(data, status, headers, config) {
+                $location.path('/joggingList')
+                $session.create(data.token)
+                alert(data.token);
+            });
+            loginPromise.error(function(data, status, headers, config) {
+                alert("Login failed!");
+            });
         }
     })
 
-    .controller('JoggingController', function ($scope, $routeParams, $location) {
+    .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
+        $scope.jogRecords = []
+        var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
+            "headers": {"Auth-Token": $session.token}
+        })
+
+        jogDataPromise.success(function(data, status, headers, config) {
+            $scope.jogRecords = data
+        });
+        jogDataPromise.error(function(data, status, headers, config) {
+        });
     })
 
     .config(function ($routeProvider) {
@@ -24,4 +41,14 @@ var joggingApp = angular.module('joggingApp', ['ngRoute'])
             .otherwise({
                 redirectTo: '/'
             })
+    })
+
+    .service('$session', function () {
+        this.create = function (token) {
+            this.token = token;
+        };
+        this.destroy = function () {
+            this.token = null;
+        };
+        return this;
     })
