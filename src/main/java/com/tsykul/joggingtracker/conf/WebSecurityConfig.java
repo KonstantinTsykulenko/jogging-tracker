@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         && "/user".equals(request.getRequestURI())).permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/logout").permitAll()
+                .antMatchers("/client/**").permitAll()
                 .anyRequest().authenticated();
     }
 
