@@ -2,6 +2,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
         $scope.credentials = {}
 
+        if ($session.token) {
+            $location.path('/joggingList')
+        }
+
         if ($routeParams.registration) {
             $scope.registered = true
         }
