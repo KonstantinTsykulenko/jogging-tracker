@@ -1,0 +1,60 @@
+<div class="container" ng-controler="RegistrationController">
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">New user registration</h3>
+                </div>
+                <div class="panel-body">
+                    <form accept-charset="UTF-8" role="form" name="registrationForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control"
+                                       placeholder="E-mail"
+                                       name="email"
+                                       type="email"
+                                       value=""
+                                       ng-model="credentials.email"
+                                       ng-maxlength="64"
+                                       required >
+                            </div>
+                            <!--<pre>credentials.email = {{ credentials.email | json }}</pre>-->
+                            <!--<pre>email = {{ email | json }}</pre>-->
+                            <!--<pre>registrationForm.credentials.email.$error = {{ registrationForm.credentials.email.$error | json }}</pre>-->
+                            <!--<pre>registrationForm.email.$error = {{ registrationForm.email.$error | json }}</pre>-->
+                            <!--<pre>credentials.$error = {{ credentials.$error | json }}</pre>-->
+                            <div ng-messages="registrationForm.email.$error">
+                                <div class="alert alert-danger" role="alert" ng-message="email">Email is invalid</div>
+                                <div class="alert alert-danger" role="alert" ng-message="maxlength">Email should be 64 characters max</div>
+                                <div class="alert alert-danger" role="alert" ng-message="required">Email is required</div>
+                            </div>
+                            <div ng-messages="credentials.$error">
+                                <div class="alert alert-danger" role="alert" ng-message="userExists">There's already a user with registered under {{credentials.email}}</div>
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control"
+                                       placeholder="Password"
+                                       name="password"
+                                       type="password"
+                                       value=""
+                                       ng-model="credentials.password"
+                                       ng-maxlength="64"
+                                       ng-minlength="6"
+                                       required >
+                            </div>
+                            <div ng-messages="registrationForm.password.$error">
+                                <div class="alert alert-danger" role="alert" ng-message="required">Password is required</div>
+                                <div class="alert alert-danger" role="alert" ng-message="minlength">Password should be at least 6 characters</div>
+                                <div class="alert alert-danger" role="alert" ng-message="maxlength">Password should be 64 characters max</div>
+                            </div>
+                            <div ng-messages="credentials.$error">
+                                <div class="alert alert-danger" role="alert" ng-message="registrationFailure">Registration failed</div>
+                            </div>
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register" ng-click="register()">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

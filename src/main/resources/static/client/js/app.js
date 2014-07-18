@@ -1,7 +1,11 @@
 var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
-        $scope.credentials = {}
-        $scope.login = function (roomId) {
+        $scope.credentials = {
+            "email": "",
+            "password": ""
+        }
+
+        $scope.login = function () {
             $scope.credentials.$error = {};
             var loginPromise = $http.post("http://localhost:9090/login", $scope.credentials)
 
@@ -23,6 +27,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
                 }
             });
         }
+
+        $scope.register = function() {
+            $location.path('/register')
+        }
     })
 
     .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
@@ -38,6 +46,32 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
         });
     })
 
+    .controller('RegistrationController', function ($scope, $routeParams, $location, $http) {
+        $scope.credentials = {}
+
+        $scope.register = function () {
+            $scope.credentials.$error = {};
+            var registerPromise = $http.post("http://localhost:9090/user", $scope.credentials)
+
+            registerPromise.success(function(data, status, headers, config) {
+                if (data.email) {
+                    $location.path('/')
+                }
+                else {
+                    $scope.credentials.$error.registrationFailure = true
+                }
+            });
+            registerPromise.error(function(data, status, headers, config) {
+                if (status == 409) {
+                    $scope.credentials.$error.userExists = true
+                }
+                else {
+                    $scope.credentials.$error.registrationFailure = true
+                }
+            });
+        }
+    })
+
     .config(function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -47,6 +81,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
             .when('/joggingList/', {
                 templateUrl: 'partials/recordList.html',
                 controller: 'JoggingController'
+            })
+            .when('/register/', {
+                templateUrl: 'partials/register.html',
+                controller: 'RegistrationController'
             })
             .otherwise({
                 redirectTo: '/'

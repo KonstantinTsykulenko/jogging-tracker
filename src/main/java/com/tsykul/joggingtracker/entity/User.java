@@ -28,7 +28,7 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     @NotNull
-    @Size(max = 64)
+    @Size(max = 64, min = 6)
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
