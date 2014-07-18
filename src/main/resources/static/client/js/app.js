@@ -38,23 +38,6 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
         }
     })
 
-    .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
-        if (!$session.token) {
-            $location.path('/')
-        }
-
-        $scope.jogRecords = []
-        var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
-            "headers": {"Auth-Token": $session.token}
-        })
-
-        jogDataPromise.success(function(data, status, headers, config) {
-            $scope.jogRecords = data
-        });
-        jogDataPromise.error(function(data, status, headers, config) {
-        });
-    })
-
     .controller('RegistrationController', function ($scope, $routeParams, $location, $http) {
         $scope.credentials = {}
 
@@ -94,6 +77,28 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
                     $scope.credentials.$error.registrationFailure = true
                 }
             });
+        }
+    })
+
+    .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
+        if (!$session.token) {
+            $location.path('/')
+        }
+
+        $scope.jogRecords = []
+        var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
+            "headers": {"Auth-Token": $session.token}
+        })
+
+        jogDataPromise.success(function(data, status, headers, config) {
+            $scope.jogRecords = data
+        });
+        jogDataPromise.error(function(data, status, headers, config) {
+        });
+
+        $scope.logout = function() {
+            $session.destroy()
+            $location.path('/')
         }
     })
 
