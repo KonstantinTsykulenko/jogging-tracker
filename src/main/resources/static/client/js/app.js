@@ -1,8 +1,9 @@
 var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
-        $scope.credentials = {
-            "email": "",
-            "password": ""
+        $scope.credentials = {}
+
+        if ($routeParams.registration) {
+            $scope.registered = true
         }
 
         $scope.login = function () {
@@ -59,7 +60,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
 
             registerPromise.success(function(data, status, headers, config) {
                 if (data.email) {
-                    $location.path('/')
+                    $location.search('registration','true').path('/')
                 }
                 else {
                     $scope.credentials.$error.registrationFailure = true
