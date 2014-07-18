@@ -14,6 +14,13 @@
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="password" type="password" value="" ng-model="credentials.password">
                             </div>
+                            <div ng-messages="credentials.$error" ng-messages-include="my-custom-messages">
+                                <!-- this required message has overridden the template message -->
+                                <div class="alert alert-danger" role="alert" ng-message="generalLogin">Login failed</div>
+
+                                <!-- this is a brand new message and will appear last in the prioritization -->
+                                <div class="alert alert-danger" role="alert" ng-message="invalidCredentials">Invalid email or password</div>
+                            </div>
                             <input class="btn btn-lg btn-primary btn-block" type="submit" value="Login" ng-click="login()">
                         </fieldset>
                     </form>

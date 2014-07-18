@@ -1,16 +1,26 @@
-var joggingApp = angular.module('joggingApp', ['ngRoute'])
+var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
         $scope.credentials = {}
         $scope.login = function (roomId) {
+            $scope.credentials.$error = {};
             var loginPromise = $http.post("http://localhost:9090/login", $scope.credentials)
 
             loginPromise.success(function(data, status, headers, config) {
-                $location.path('/joggingList')
-                $session.create(data.token)
-                alert(data.token);
+                if (data.token) {
+                    $location.path('/joggingList')
+                    $session.create(data.token)
+                }
+                else {
+                    $scope.credentials.$error.generalLogin = true
+                }
             });
             loginPromise.error(function(data, status, headers, config) {
-                alert("Login failed!");
+                if (status == 403) {
+                    $scope.credentials.$error.invalidCredentials = true
+                }
+                else {
+                    $scope.credentials.$error.generalLogin = true
+                }
             });
         }
     })
