@@ -39,6 +39,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     })
 
     .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
+        if (!$session.token) {
+            $location.path('/')
+        }
+
         $scope.jogRecords = []
         var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
             "headers": {"Auth-Token": $session.token}
