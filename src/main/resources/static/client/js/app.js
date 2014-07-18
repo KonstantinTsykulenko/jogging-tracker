@@ -4,6 +4,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
 
         if ($session.token) {
             $location.path('/joggingList')
+            return
         }
 
         if ($routeParams.registration) {
@@ -83,6 +84,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
     .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
         if (!$session.token) {
             $location.path('/')
+            return
         }
 
         $scope.jogRecords = []
