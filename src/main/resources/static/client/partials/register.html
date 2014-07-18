@@ -6,7 +6,7 @@
                     <h3 class="panel-title">New user registration</h3>
                 </div>
                 <div class="panel-body">
-                    <form accept-charset="UTF-8" role="form" name="registrationForm">
+                    <form accept-charset="UTF-8" role="form" name="registrationForm" ng-submit="register()">
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control"
@@ -18,18 +18,14 @@
                                        ng-maxlength="64"
                                        required >
                             </div>
-                            <!--<pre>credentials.email = {{ credentials.email | json }}</pre>-->
-                            <!--<pre>email = {{ email | json }}</pre>-->
-                            <!--<pre>registrationForm.credentials.email.$error = {{ registrationForm.credentials.email.$error | json }}</pre>-->
-                            <!--<pre>registrationForm.email.$error = {{ registrationForm.email.$error | json }}</pre>-->
-                            <!--<pre>credentials.$error = {{ credentials.$error | json }}</pre>-->
                             <div ng-messages="registrationForm.email.$error">
                                 <div class="alert alert-danger" role="alert" ng-message="email">Email is invalid</div>
                                 <div class="alert alert-danger" role="alert" ng-message="maxlength">Email should be 64 characters max</div>
                                 <div class="alert alert-danger" role="alert" ng-message="required">Email is required</div>
                             </div>
                             <div ng-messages="credentials.$error">
-                                <div class="alert alert-danger" role="alert" ng-message="userExists">There's already a user with registered under {{credentials.email}}</div>
+                                <div class="alert alert-danger" role="alert" ng-message="userExists">There's already a user registered under {{credentials.email}}</div>
+                                <div class="alert alert-danger" role="alert" ng-message="invalidEmail">{{credentials.$error.invalidEmailMessage}}</div>
                             </div>
                             <div class="form-group">
                                 <input class="form-control"
@@ -49,8 +45,9 @@
                             </div>
                             <div ng-messages="credentials.$error">
                                 <div class="alert alert-danger" role="alert" ng-message="registrationFailure">Registration failed</div>
+                                <div class="alert alert-danger" role="alert" ng-message="invalidPassword">{{credentials.$error.invalidPasswordMessage}}</div>
                             </div>
-                            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register" ng-click="register()">
+                            <input class="btn btn-lg btn-primary btn-block" type="submit" value="Register">
                         </fieldset>
                     </form>
                 </div>
