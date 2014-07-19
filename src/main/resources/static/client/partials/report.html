@@ -1,0 +1,31 @@
+<div ng-controler="JoggingController">
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Weekly report</h3>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Week</th>
+                        <th>Average distance</th>
+                        <th>Duration</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="weekData in reportData">
+                        <td>{{weekData.weekOfYear}}</td>
+                        <td>{{weekData.averageDistance}} meters</td>
+                        <td>{{weekData.averageTime}} seconds</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <button class="btn btn-primary" ng-click="refresh()"><span
+                    class="glyphicon glyphicon-refresh"></span>Refresh</button>
+        </div>
+    </div>
+</div>

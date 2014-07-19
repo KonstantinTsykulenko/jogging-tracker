@@ -54,6 +54,7 @@
                         </p>
                     </div>
                     <div class="col-md-3">
+                        <button class="btn btn-primary" ng-click="showReport()">Show report</button>
                     </div>
                     <div class="col-md-1">
                         <button class="btn btn-primary" ng-click="refresh()"><span
@@ -104,8 +105,8 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <div ng-messages="record.$error">
+                        <td ng-messages="record.$error">
+                            <div>
                                 <div ng-message="validationError">
                                     <div class="alert alert-danger" role="alert"
                                          ng-repeat="validationError in record.$error.validationErrors">

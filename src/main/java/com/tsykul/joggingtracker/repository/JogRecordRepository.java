@@ -17,7 +17,7 @@ public interface JogRecordRepository extends JpaRepository<JogRecord, Long>{
     public List<JogRecord> findByUserId(@Param("userId") String userId);
 
     @Query(nativeQuery = true,
-            value = "select avg(distance) as avgDistance, avg(duration) as avgDuration, CAST(EXTRACT(YEAR FROM date) AS VARCHAR)|| '-' || CAST(EXTRACT(WEEK FROM date) AS VARCHAR) AS week from jog_record where user_id = :userId group by week")
+            value = "select avg(distance) as avgDistance, avg(duration) as avgDuration, CAST(EXTRACT(YEAR FROM date) AS VARCHAR)|| '-' || CAST(EXTRACT(WEEK FROM date) AS VARCHAR) AS week from jog_record where user_id = :userId group by week order by week desc")
     public List<Object[]> getWeeklyUserReport(@Param("userId") String userId);
 
     @Modifying

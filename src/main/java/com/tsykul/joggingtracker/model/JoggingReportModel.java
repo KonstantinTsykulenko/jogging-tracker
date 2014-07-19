@@ -9,12 +9,12 @@ import java.math.BigDecimal;
 public class JoggingReportModel {
     private BigDecimal averageDistance;
     private BigDecimal averageTime;
-    private String weekOFYear;
+    private String weekOfYear;
 
-    public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, String weekOFYear) {
+    public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, String weekOfYear) {
         this.averageDistance = averageDistance;
         this.averageTime = averageTime;
-        this.weekOFYear = weekOFYear;
+        this.weekOfYear = weekOfYear;
     }
 
     public BigDecimal getAverageDistance() {
@@ -33,11 +33,11 @@ public class JoggingReportModel {
         this.averageTime = averageTime;
     }
 
-    public String getWeekOFYear() {
-        return weekOFYear;
+    public String getWeekOfYear() {
+        return weekOfYear;
     }
 
-    public void setWeekOFYear(String weekOFYear) {
-        this.weekOFYear = weekOFYear;
+    public void setWeekOfYear(String weekOfYear) {
+        this.weekOfYear = weekOfYear;
     }
 }
