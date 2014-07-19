@@ -101,6 +101,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
         $scope.jogRecords = []
 
         $scope.refresh = function () {
+            $scope.jogRecords.$error = []
             var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
                 "headers": {"Auth-Token": $session.token}
             })
@@ -109,12 +110,14 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.jogRecords = data
             });
             jogDataPromise.error(function (data, status, headers, config) {
+                $scope.jogRecords.$error.generalError = true
             });
         }
 
         $scope.refresh()
 
         $scope.addRecord = function () {
+            $scope.record.$error = {}
             var addRecordResponse = $http.post("http://localhost:9090/jogRecord", $scope.record, {
                 "headers": {"Auth-Token": $session.token}
             })
@@ -123,10 +126,21 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.refresh()
             });
             addRecordResponse.error(function (data, status, headers, config) {
+                if (status == 400) {
+                    $scope.record.$error.validationError = true;
+                    $scope.record.$error.validationErrors = [];
+                    data.errors.forEach(function (error) {
+                        $scope.record.$error.validationErrors.push(error.field + ' ' + error.error);
+                    })
+                }
+                else {
+                    $scope.record.$error.genericError = true;
+                }
             });
         }
 
         $scope.removeRecord = function (id) {
+            $scope.$removalError = {}
             var addRecordResponse = $http.delete("http://localhost:9090/jogRecord/" + id, {
                 "headers": {"Auth-Token": $session.token}
             })
@@ -135,6 +149,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.refresh()
             });
             addRecordResponse.error(function (data, status, headers, config) {
+                $scope.$removalError.removalError = true
             });
         }
 

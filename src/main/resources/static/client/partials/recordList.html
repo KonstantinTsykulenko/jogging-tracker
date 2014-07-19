@@ -7,6 +7,12 @@
         <div class="page-header">
             <h1>Welcome, {{userName}}</h1>
         </div>
+        <div ng-messages="jogRecords.$error">
+            <div class="alert alert-danger" role="alert" ng-message="generalError">Data retrieval failed</div>
+        </div>
+        <div ng-messages="$removalError">
+            <div class="alert alert-danger" role="alert" ng-message="removalError">Failed to delete record</div>
+        </div>
         <div class="row">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -22,7 +28,6 @@
                                    datepicker-popup="yyyy/MM/dd"
                                    ng-model="startDate"
                                    is-open="fromDate"
-                                   ng-required="true"
                                    close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
@@ -40,7 +45,6 @@
                                    datepicker-popup="yyyy/MM/dd"
                                    ng-model="endDate"
                                    is-open="toDate"
-                                   ng-required="true"
                                    close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
@@ -87,14 +91,31 @@
                             </div>
                         </td>
                         <td>
-                            <input type="text" placeholder="Distance (meters)" ng-model="record.distance"/>
+                            <input type="text" placeholder="Distance (meters)" ng-model="record.distance"
+                                   ng-required="true"/>
                         </td>
                         <td>
-                            <input type="text" placeholder="Duration (seconds)" ng-model="record.duration"/>
+                            <input type="text" placeholder="Duration (seconds)" ng-model="record.duration"
+                                   ng-required="true"/>
                         </td>
                         <td>
                             <button class="btn btn-primary" ng-click="addRecord()"><span
                                     class="glyphicon glyphicon-plus"></span></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div ng-messages="record.$error">
+                                <div ng-message="validationError">
+                                    <div class="alert alert-danger" role="alert"
+                                         ng-repeat="validationError in record.$error.validationErrors">
+                                        {{validationError}}
+                                    </div>
+                                </div>
+                                <div class="alert alert-danger" role="alert" ng-message="genericError">Insertion
+                                    failed
+                                </div>
+                            </div>
                         </td>
                     </tr>
                     <tr ng-repeat="jogRecord in jogRecords | filter:filterByDates">
