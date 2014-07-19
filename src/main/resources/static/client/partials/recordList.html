@@ -5,7 +5,7 @@
             </button>
         </ul>
         <div class="page-header">
-            <h1>Jog listing</h1>
+            <h1>Welcome, {{userName}}</h1>
         </div>
         <div class="row">
             <div class="panel panel-primary">
@@ -13,7 +13,48 @@
                     <h3 class="panel-title">Jogs</h3>
                 </div>
                 <div class="panel-body">
-                    <input type="text" class="form-control" placeholder="Filter jogs"/>
+                    <div class="col-md-1">
+                        <label class="control-label">From</label>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="input-group">
+                            <input type="text" class="form-control"
+                                   datepicker-popup="yyyy/MM/dd"
+                                   ng-model="startDate"
+                                   is-open="fromDate"
+                                   ng-required="true"
+                                   close-text="Close"/>
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="open($event, 'fromDate')"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                        </p>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="control-label">To</label>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="input-group">
+                            <input type="text" class="form-control"
+                                   datepicker-popup="yyyy/MM/dd"
+                                   ng-model="endDate"
+                                   is-open="toDate"
+                                   ng-required="true"
+                                   close-text="Close"/>
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="open($event, 'toDate')"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                        </p>
+                    </div>
+                    <div class="col-md-3">
+                    </div>
+                    <div class="col-md-1">
+                        <button class="btn btn-primary" ng-click="refresh()"><span
+                                class="glyphicon glyphicon-refresh"></span></button>
+                    </div>
                 </div>
                 <table class="table table-hover">
                     <thead>
@@ -33,11 +74,12 @@
                                         <input type="text" class="form-control"
                                                datepicker-popup="yyyy/MM/dd"
                                                ng-model="record.date"
-                                               is-open="opened"
+                                               is-open="newRecordDate"
                                                ng-required="true"
                                                close-text="Close"/>
                                           <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="open($event, 'newRecordDate')"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                           </span>
                                     </p>
@@ -51,25 +93,23 @@
                             <input type="text" placeholder="Duration (seconds)" ng-model="record.duration"/>
                         </td>
                         <td>
-                            <button class="btn btn-primary" ng-click="addRecord()"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button class="btn btn-primary" ng-click="addRecord()"><span
+                                    class="glyphicon glyphicon-plus"></span></button>
                         </td>
                     </tr>
-                    <tr ng-repeat="jogRecord in jogRecords">
+                    <tr ng-repeat="jogRecord in jogRecords | filter:filterByDates">
                         <td>{{jogRecord.date}}</td>
                         <td>{{jogRecord.distance}} meters</td>
                         <td>{{jogRecord.duration}} seconds</td>
                         <td>
-                            <button class="btn btn-danger btn-large" ng-click="removeRecord(jogRecord.id)"><span class="glyphicon glyphicon-minus"></span></button>
+                            <button class="btn btn-danger btn-large" ng-click="removeRecord(jogRecord.id)"><span
+                                    class="glyphicon glyphicon-minus"></span></button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <button class="btn btn-primary" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span>Refresh
-        </button>
-        <button class="btn btn-primary" ng-click="addRecord()"><span class="glyphicon glyphicon-plus"></span>Add record
-        </button>
     </div>
 </div>
 </div>

@@ -15,16 +15,16 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             $scope.credentials.$error = {};
             var loginPromise = $http.post("http://localhost:9090/login", $scope.credentials)
 
-            loginPromise.success(function(data, status, headers, config) {
+            loginPromise.success(function (data, status, headers, config) {
                 if (data.token) {
                     $location.path('/joggingList')
-                    $session.create(data.token)
+                    $session.create(data.token, $scope.credentials.email)
                 }
                 else {
                     $scope.credentials.$error.generalLogin = true
                 }
             });
-            loginPromise.error(function(data, status, headers, config) {
+            loginPromise.error(function (data, status, headers, config) {
                 if (status == 403) {
                     $scope.credentials.$error.invalidCredentials = true
                 }
@@ -34,7 +34,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             });
         }
 
-        $scope.register = function() {
+        $scope.register = function () {
             $location.path('/register')
         }
     })
@@ -50,20 +50,20 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             $scope.credentials.$error = {};
             var registerPromise = $http.post("http://localhost:9090/user", $scope.credentials)
 
-            registerPromise.success(function(data, status, headers, config) {
+            registerPromise.success(function (data, status, headers, config) {
                 if (data.email) {
-                    $location.search('registration','true').path('/')
+                    $location.search('registration', 'true').path('/')
                 }
                 else {
                     $scope.credentials.$error.registrationFailure = true
                 }
             });
-            registerPromise.error(function(data, status, headers, config) {
+            registerPromise.error(function (data, status, headers, config) {
                 if (status == 409) {
                     $scope.credentials.$error.userExists = true
                 }
                 else if (status == 400 && data.errors) {
-                    data.errors.forEach(function(error) {
+                    data.errors.forEach(function (error) {
                         if (error.field == 'email') {
                             $scope.credentials.$error.invalidEmail = true
                             $scope.credentials.$error.invalidEmailMessage = error.field + ' ' + error.error
@@ -81,64 +81,80 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
         }
     })
 
-    .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session) {
+    .controller('JoggingController', function ($scope, $routeParams, $location, $http, $session, $filter) {
         if (!$session.token) {
             $location.path('/')
             return
         }
 
         $scope.record = {}
-
         $scope.record.date = new Date()
+        $scope.userName = $session.userName
 
-        $scope.open = function($event) {
+        $scope.open = function ($event, id) {
             $event.preventDefault();
             $event.stopPropagation();
 
-            $scope.opened = true;
+            $scope[id] = true;
         };
 
         $scope.jogRecords = []
 
-        $scope.refresh = function() {
+        $scope.refresh = function () {
             var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
                 "headers": {"Auth-Token": $session.token}
             })
 
-            jogDataPromise.success(function(data, status, headers, config) {
+            jogDataPromise.success(function (data, status, headers, config) {
                 $scope.jogRecords = data
             });
-            jogDataPromise.error(function(data, status, headers, config) {
+            jogDataPromise.error(function (data, status, headers, config) {
             });
         }
 
         $scope.refresh()
 
-        $scope.addRecord = function() {
+        $scope.addRecord = function () {
             var addRecordResponse = $http.post("http://localhost:9090/jogRecord", $scope.record, {
                 "headers": {"Auth-Token": $session.token}
             })
 
-            addRecordResponse.success(function(data, status, headers, config) {
+            addRecordResponse.success(function (data, status, headers, config) {
                 $scope.refresh()
             });
-            addRecordResponse.error(function(data, status, headers, config) {
+            addRecordResponse.error(function (data, status, headers, config) {
             });
         }
 
-        $scope.removeRecord = function(id) {
+        $scope.removeRecord = function (id) {
             var addRecordResponse = $http.delete("http://localhost:9090/jogRecord/" + id, {
                 "headers": {"Auth-Token": $session.token}
             })
 
-            addRecordResponse.success(function(data, status, headers, config) {
+            addRecordResponse.success(function (data, status, headers, config) {
                 $scope.refresh()
             });
-            addRecordResponse.error(function(data, status, headers, config) {
+            addRecordResponse.error(function (data, status, headers, config) {
             });
         }
 
-        $scope.logout = function() {
+        $scope.filterByDates = function (record) {
+
+            var startDate = $filter('date')($scope.startDate, 'yyyy/MM/dd')
+            var endDate = $filter('date')($scope.endDate, 'yyyy/MM/dd')
+
+            if (record.date < startDate) {
+                return false;
+            }
+
+            if (record.date > endDate) {
+                return false;
+            }
+
+            return true;
+        };
+
+        $scope.logout = function () {
             $session.destroy()
             $location.path('/')
         }
@@ -164,11 +180,13 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
     })
 
     .service('$session', function () {
-        this.create = function (token) {
-            this.token = token;
-        };
+        this.create = function (token, userName) {
+            this.token = token
+            this.userName = userName
+        }
         this.destroy = function () {
-            this.token = null;
-        };
-        return this;
+            this.token = null
+            this.userName = null
+        }
+        return this
     })
