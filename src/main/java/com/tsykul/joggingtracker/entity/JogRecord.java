@@ -8,15 +8,19 @@ import java.util.Date;
  * @since 7/15/2014.
  */
 @Entity
+@Table(name = "jog_record")
 public class JogRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(nullable = false)
     private Date date;
 
+    @Column(nullable = false)
     private Long distance;
 
+    @Column(nullable = false)
     private Long duration;
 
     @ManyToOne(fetch = FetchType.LAZY)

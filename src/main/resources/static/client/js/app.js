@@ -1,4 +1,4 @@
-var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
+var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.bootstrap'])
     .controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
         $scope.credentials = {}
 
@@ -87,16 +87,56 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages'])
             return
         }
 
-        $scope.jogRecords = []
-        var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
-            "headers": {"Auth-Token": $session.token}
-        })
+        $scope.record = {}
 
-        jogDataPromise.success(function(data, status, headers, config) {
-            $scope.jogRecords = data
-        });
-        jogDataPromise.error(function(data, status, headers, config) {
-        });
+        $scope.record.date = new Date()
+
+        $scope.open = function($event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+
+            $scope.opened = true;
+        };
+
+        $scope.jogRecords = []
+
+        $scope.refresh = function() {
+            var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
+                "headers": {"Auth-Token": $session.token}
+            })
+
+            jogDataPromise.success(function(data, status, headers, config) {
+                $scope.jogRecords = data
+            });
+            jogDataPromise.error(function(data, status, headers, config) {
+            });
+        }
+
+        $scope.refresh()
+
+        $scope.addRecord = function() {
+            var addRecordResponse = $http.post("http://localhost:9090/jogRecord", $scope.record, {
+                "headers": {"Auth-Token": $session.token}
+            })
+
+            addRecordResponse.success(function(data, status, headers, config) {
+                $scope.refresh()
+            });
+            addRecordResponse.error(function(data, status, headers, config) {
+            });
+        }
+
+        $scope.removeRecord = function(id) {
+            var addRecordResponse = $http.delete("http://localhost:9090/jogRecord/" + id, {
+                "headers": {"Auth-Token": $session.token}
+            })
+
+            addRecordResponse.success(function(data, status, headers, config) {
+                $scope.refresh()
+            });
+            addRecordResponse.error(function(data, status, headers, config) {
+            });
+        }
 
         $scope.logout = function() {
             $session.destroy()

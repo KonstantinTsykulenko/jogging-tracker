@@ -5,14 +5,71 @@
             </button>
         </ul>
         <div class="page-header">
-            <h1>Jogging listing</h1>
+            <h1>Jog listing</h1>
         </div>
-        <div class="list-group" id="chat-group-list">
-            <a href="#" ng-repeat="jogRecord in jogRecords" class="list-group-item">{{jogRecord}}</a>
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Jogs</h3>
+                </div>
+                <div class="panel-body">
+                    <input type="text" class="form-control" placeholder="Filter jogs"/>
+                </div>
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Distance</th>
+                        <th>Duration</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <p class="input-group">
+                                        <input type="text" class="form-control"
+                                               datepicker-popup="yyyy/MM/dd"
+                                               ng-model="record.date"
+                                               is-open="opened"
+                                               ng-required="true"
+                                               close-text="Close"/>
+                                          <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open($event)"><i
+                                                    class="glyphicon glyphicon-calendar"></i></button>
+                                          </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Distance (meters)" ng-model="record.distance"/>
+                        </td>
+                        <td>
+                            <input type="text" placeholder="Duration (seconds)" ng-model="record.duration"/>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" ng-click="addRecord()"><span class="glyphicon glyphicon-plus"></span></button>
+                        </td>
+                    </tr>
+                    <tr ng-repeat="jogRecord in jogRecords">
+                        <td>{{jogRecord.date}}</td>
+                        <td>{{jogRecord.distance}} meters</td>
+                        <td>{{jogRecord.duration}} seconds</td>
+                        <td>
+                            <button class="btn btn-danger btn-large" ng-click="removeRecord(jogRecord.id)"><span class="glyphicon glyphicon-minus"></span></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <button class="btn btn-primary" ng-click="refresh()"><span class="glyphicon glyphicon-refresh"></span>Refresh
         </button>
         <button class="btn btn-primary" ng-click="addRecord()"><span class="glyphicon glyphicon-plus"></span>Add record
         </button>
     </div>
+</div>
 </div>

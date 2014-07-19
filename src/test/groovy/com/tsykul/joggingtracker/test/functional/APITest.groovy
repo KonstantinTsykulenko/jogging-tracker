@@ -15,7 +15,7 @@ class APITest extends Specification {
     @Shared
     def appEndpoint = new RESTClient('http://localhost:9090/')
     @Shared
-    def userData = [email: 'test11@gmaiil.com', password: 'password']
+    def userData = [email: 'test@gmail.com', password: 'password']
     @Shared
     def token
 
