@@ -11,33 +11,43 @@ import java.math.BigDecimal;
  */
 public class JoggingReportModel {
 
-    private BigDecimal averageDistance;
-    private BigDecimal averageTime;
+    @JsonSerialize(using = SpeedSerializer.class)
+    private Double averageDistance;
+    @JsonSerialize(using = SpeedSerializer.class)
+    private Double averageTime;
     private String weekOfYear;
     @JsonSerialize(using = SpeedSerializer.class)
     private Double averageSpeed;
 
     public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, BigDecimal averageSpeed, String weekOfYear) {
-        this.averageDistance = averageDistance;
-        this.averageTime = averageTime;
+        this.averageDistance = averageDistance.doubleValue();
+        this.averageTime = averageTime.doubleValue();
         this.averageSpeed = averageSpeed.doubleValue();
         this.weekOfYear = weekOfYear;
     }
 
-    public BigDecimal getAverageDistance() {
+    public Double getAverageDistance() {
         return averageDistance;
     }
 
-    public void setAverageDistance(BigDecimal averageDistance) {
+    public void setAverageDistance(Double averageDistance) {
         this.averageDistance = averageDistance;
     }
 
-    public BigDecimal getAverageTime() {
+    public Double getAverageTime() {
         return averageTime;
     }
 
-    public void setAverageTime(BigDecimal averageTime) {
+    public void setAverageTime(Double averageTime) {
         this.averageTime = averageTime;
+    }
+
+    public Double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(Double averageSpeed) {
+        this.averageSpeed = averageSpeed;
     }
 
     public String getWeekOfYear() {
@@ -46,9 +56,5 @@ public class JoggingReportModel {
 
     public void setWeekOfYear(String weekOfYear) {
         this.weekOfYear = weekOfYear;
-    }
-
-    public Double getAverageSpeed() {
-        return averageSpeed;
     }
 }
