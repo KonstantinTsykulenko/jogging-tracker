@@ -21,18 +21,21 @@ public class User implements UserDetails {
 
     @Id
     @Column(nullable = false, updatable = false)
-    @Email
-    @NotNull
-    @Size(max = 64)
     private String email;
 
     @Column(nullable = false)
-    @NotNull
-    @Size(max = 64, min = 6)
     private String password;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<JogRecord> jogRecords;
+
+    public User() {
+    }
+
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

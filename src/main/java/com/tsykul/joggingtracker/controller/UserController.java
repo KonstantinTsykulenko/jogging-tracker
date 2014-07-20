@@ -1,10 +1,8 @@
 package com.tsykul.joggingtracker.controller;
 
-import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.exception.UserExistsException;
 import com.tsykul.joggingtracker.model.Credentials;
 import com.tsykul.joggingtracker.model.ExceptionModel;
-import com.tsykul.joggingtracker.model.ResponseStatus;
 import com.tsykul.joggingtracker.security.UserUtil;
 import com.tsykul.joggingtracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +25,14 @@ public class UserController {
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public Credentials createUser(@RequestBody @Valid User user) {
-        User savedUser = userService.saveUser(user);
-        return new Credentials(savedUser.getEmail(), savedUser.getPassword());
+    public Credentials createUser(@RequestBody @Valid Credentials user) {
+        return userService.saveUser(user);
     }
 
     @RequestMapping(value = "/user",
-            method = RequestMethod.DELETE,
-            produces = "application/json")
-    public ResponseStatus deleteUser() {
+            method = RequestMethod.DELETE)
+    public void deleteUser() {
         userService.removeUser(UserUtil.getUser());
-        return new ResponseStatus(ResponseStatus.Status.SUCCESS);
     }
 
     @ExceptionHandler

@@ -1,11 +1,21 @@
 package com.tsykul.joggingtracker.model;
 
+import org.hibernate.validator.constraints.Email;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 /**
  * @author KonstantinTsykulenko
  * @since 7/14/2014.
  */
 public class Credentials {
+    @Email
+    @NotNull
+    @Size(max = 64)
     private String email;
+    @NotNull
+    @Size(max = 64, min = 6)
     private String password;
 
     public Credentials() {
