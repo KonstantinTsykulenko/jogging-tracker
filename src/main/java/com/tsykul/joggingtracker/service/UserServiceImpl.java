@@ -2,6 +2,7 @@ package com.tsykul.joggingtracker.service;
 
 import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.exception.UserExistsException;
+import com.tsykul.joggingtracker.model.Credentials;
 import com.tsykul.joggingtracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,13 +26,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public User saveUser(User user) {
-        User existing = repository.findOne(user.getUsername());
+    public Credentials saveUser(Credentials user) {
+        User existing = repository.findOne(user.getEmail());
         if (existing != null) {
             throw new UserExistsException(
-                    String.format("There already exists a user with email=%s", user.getUsername()));
+                    String.format("There already exists a user with email=%s", user.getEmail()));
         }
-        return repository.save(user);
+        User savedUser = repository.save(new User(user.getEmail(), user.getPassword()));
+        return new Credentials(savedUser.getEmail(), savedUser.getPassword());
     }
 
     @Override

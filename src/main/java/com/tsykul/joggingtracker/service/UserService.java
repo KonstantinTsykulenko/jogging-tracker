@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * @since 7/14/2014.
  */
 public interface UserService extends UserDetailsService {
-    User saveUser(User user);
+    Credentials saveUser(Credentials user);
 
     public void removeUser(User user);
 }
