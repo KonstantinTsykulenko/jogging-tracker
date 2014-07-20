@@ -1,5 +1,6 @@
 package com.tsykul.joggingtracker.test.functional
 
+import com.tsykul.joggingtracker.test.util.Integration
 import groovyx.net.http.RESTClient
 import spock.lang.Shared
 import spock.lang.Specification
@@ -9,6 +10,7 @@ import spock.lang.Stepwise
  * @author KonstantinTsykulenko
  * @since 7/15/2014.
  */
+@Integration
 @Stepwise
 class APITest extends Specification {
 

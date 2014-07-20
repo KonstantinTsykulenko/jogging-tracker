@@ -13,7 +13,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.login = function () {
             $scope.credentials.$error = {};
-            var loginPromise = $http.post("http://localhost:9090/login", $scope.credentials);
+            var loginPromise = $http.post("/login", $scope.credentials);
 
             loginPromise.success(function (data, status, headers, config) {
                 if (data.token) {
@@ -48,7 +48,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             }
 
             $scope.credentials.$error = {};
-            var registerPromise = $http.post("http://localhost:9090/user", $scope.credentials);
+            var registerPromise = $http.post("/user", $scope.credentials);
 
             registerPromise.success(function (data, status, headers, config) {
                 if (data.email) {
@@ -107,7 +107,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.refresh = function () {
             $scope.jogRecords.$error = [];
-            var jogDataPromise = $http.get("http://localhost:9090/jogRecord", {
+            var jogDataPromise = $http.get("/jogRecord", {
                 "headers": {"Auth-Token": $session.token}
             });
 
@@ -123,7 +123,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.addRecord = function () {
             $scope.record.$error = {};
-            var addRecordResponse = $http.post("http://localhost:9090/jogRecord", $scope.record, {
+            var addRecordResponse = $http.post("/jogRecord", $scope.record, {
                 "headers": {"Auth-Token": $session.token}
             });
 
@@ -146,7 +146,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.removeRecord = function (id) {
             $scope.$removalError = {};
-            var addRecordResponse = $http.delete("http://localhost:9090/jogRecord/" + id, {
+            var addRecordResponse = $http.delete("/jogRecord" + id, {
                 "headers": {"Auth-Token": $session.token}
             });
 
@@ -194,7 +194,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.refresh = function () {
             $scope.reportData.$error = [];
-            var jogDataPromise = $http.get("http://localhost:9090/jogRecord/report", {
+            var jogDataPromise = $http.get("/jogRecord/report", {
                 "headers": {"Auth-Token": $session.token}
             });
 
