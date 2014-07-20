@@ -18,7 +18,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             loginPromise.success(function (data, status, headers, config) {
                 if (data.token) {
                     $location.path('/joggingList');
-                    $session.create(data.token, $scope.credentials.email)
+                    $session.create(data.token, $scope.credentials.email);
                 }
                 else {
                     $scope.credentials.$error.generalLogin = true;
@@ -27,6 +27,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             loginPromise.error(function (data, status, headers, config) {
                 if (status == 403) {
                     $scope.credentials.$error.invalidCredentials = true;
+                }
+                else if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
                 }
                 else {
                     $scope.credentials.$error.generalLogin = true;
@@ -61,6 +65,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             registerPromise.error(function (data, status, headers, config) {
                 if (status == 409) {
                     $scope.credentials.$error.userExists = true;
+                }
+                else if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
                 }
                 else if (status == 400 && data.errors) {
                     data.errors.forEach(function (error) {
@@ -115,7 +123,13 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.jogRecords = data;
             });
             jogDataPromise.error(function (data, status, headers, config) {
-                $scope.jogRecords.$error.generalError = true;
+                if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
+                }
+                else {
+                    $scope.jogRecords.$error.generalError = true;
+                }
             });
         }
 
@@ -138,6 +152,10 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                         $scope.record.$error.validationErrors.push(error.field + ' ' + error.error);
                     });
                 }
+                else if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
+                }
                 else {
                     $scope.record.$error.genericError = true;
                 }
@@ -154,7 +172,13 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.refresh();
             });
             addRecordResponse.error(function (data, status, headers, config) {
-                $scope.$removalError.removalError = true;
+                if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
+                }
+                else {
+                    $scope.$removalError.removalError = true;
+                }
             });
         }
 
@@ -202,7 +226,13 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 $scope.reportData = data;
             });
             jogDataPromise.error(function (data, status, headers, config) {
-                $scope.reportData.$error.generalError = true;
+                if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
+                }
+                else {
+                    $scope.reportData.$error.generalError = true;
+                }
             });
         }
 
