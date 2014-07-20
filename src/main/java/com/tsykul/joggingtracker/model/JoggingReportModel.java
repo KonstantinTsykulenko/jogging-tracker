@@ -20,8 +20,8 @@ public class JoggingReportModel {
     public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, BigDecimal averageSpeed, String weekOfYear) {
         this.averageDistance = averageDistance;
         this.averageTime = averageTime;
-        this.weekOfYear = weekOfYear;
         this.averageSpeed = averageSpeed.doubleValue();
+        this.weekOfYear = weekOfYear;
     }
 
     public BigDecimal getAverageDistance() {

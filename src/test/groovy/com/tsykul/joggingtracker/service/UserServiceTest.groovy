@@ -4,6 +4,7 @@ import com.tsykul.joggingtracker.entity.User
 import com.tsykul.joggingtracker.exception.UserExistsException
 import com.tsykul.joggingtracker.model.Credentials
 import com.tsykul.joggingtracker.repository.UserRepository
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import spock.lang.Specification
 
 /**
@@ -37,5 +38,31 @@ class UserServiceTest extends Specification {
             userService.saveUser(new Credentials(email, password))
         then:
             thrown(UserExistsException)
+    }
+
+    def "Should load an existing user"() {
+        given:
+            def userRepository = Mock(UserRepository)
+            def email = "test@gmail.com"
+            def password = "password"
+            userRepository.findOne(email) >> new User(email, password)
+            def userService = new UserServiceImpl(userRepository)
+        when:
+            def user = userService.loadUserByUsername(email)
+        then:
+            user.email == email
+            user.password == password
+    }
+
+    def "Should throw exception when loading non existing user"() {
+        given:
+            def userRepository = Mock(UserRepository)
+            def email = "test@gmail.com"
+            userRepository.findOne(email) >> null
+            def userService = new UserServiceImpl(userRepository)
+        when:
+            userService.loadUserByUsername(email)
+        then:
+            thrown(UsernameNotFoundException)
     }
 }

@@ -27,6 +27,15 @@ public class JogRecord {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    public JogRecord() {
+    }
+
+    public JogRecord(Date date, Long distance, Long duration) {
+        this.date = date;
+        this.distance = distance;
+        this.duration = duration;
+    }
+
     public Long getId() {
         return id;
     }

@@ -20,8 +20,12 @@ import java.util.stream.Collectors;
 @Service
 public class JoggingService {
 
-    @Autowired
     private JogRecordRepository repository;
+
+    @Autowired
+    public JoggingService(JogRecordRepository repository) {
+        this.repository = repository;
+    }
 
     @Transactional
     public JogRecordModel saveJogRecord(JogRecordModel record, User user) {
@@ -52,7 +56,7 @@ public class JoggingService {
     public List<JoggingReportModel> getReport(String userId) {
         List<Object[]> weeklyUserReport = repository.getWeeklyUserReport(userId);
         return weeklyUserReport.stream().map(val ->
-                new JoggingReportModel((BigDecimal ) val[0], (BigDecimal) val[1], (BigDecimal) val[2], (String) val[3])).
+                new JoggingReportModel((BigDecimal) val[0], (BigDecimal) val[1], (BigDecimal) val[2], (String) val[3])).
                 collect(Collectors.toList());
     }
 
