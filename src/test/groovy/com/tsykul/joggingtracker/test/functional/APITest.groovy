@@ -1,6 +1,7 @@
 package com.tsykul.joggingtracker.test.functional
 
 import com.tsykul.joggingtracker.test.util.Integration
+import groovyx.net.http.HttpResponseException
 import groovyx.net.http.RESTClient
 import spock.lang.Shared
 import spock.lang.Specification
@@ -71,6 +72,14 @@ class APITest extends Specification {
             ['date': '2014-07-01T20:44:55', 'distance': 40000, 'duration': 720] | _
     }
 
+    def "Should not be able to add jog records unauthenticated"() {
+        when:
+            appEndpoint.post([path: 'jogRecord', requestContentType: 'application/json', body: ['date': '2014-06-03T20:44:55', 'distance': 5000, 'duration': 240]])
+        then:
+            HttpResponseException e = thrown()
+            e.response.status == 403
+    }
+
     def "Should be able to get report"() {
         when:
             def response = appEndpoint.get([path: 'jogRecord/report', requestContentType: 'application/json', 'headers': ['Auth-Token': token]])
@@ -87,6 +96,14 @@ class APITest extends Specification {
                 it[0]['averageDistance'] == it[1]['averageDistance']
                 it[0]['averageSpeed'] == it[1]['averageSpeed']
             }
+    }
+
+    def "Should not be able to get report unauthenticated"() {
+        when:
+        appEndpoint.get([path: 'jogRecord/report', requestContentType: 'application/json'])
+        then:
+            HttpResponseException e = thrown()
+            e.response.status == 403
     }
 
     def "Should be able to get jog records"() {
@@ -113,10 +130,26 @@ class APITest extends Specification {
             }
     }
 
+    def "Should not be able to get jog records unauthenticated"() {
+        when:
+            appEndpoint.get([path: 'jogRecord', requestContentType: 'application/json'])
+        then:
+            HttpResponseException e = thrown()
+            e.response.status == 403
+    }
+
     def "Should be able to delete user"() {
         when:
             def resp = appEndpoint.delete([path: 'user', requestContentType: 'application/json', 'headers': ['Auth-Token': token]])
         then:
             resp.status == 200
+    }
+
+    def "Should not be able to delete user unauthenticated"() {
+        when:
+        appEndpoint.delete([path: 'user', requestContentType: 'application/json'])
+        then:
+            HttpResponseException e = thrown()
+            e.response.status == 403
     }
 }
