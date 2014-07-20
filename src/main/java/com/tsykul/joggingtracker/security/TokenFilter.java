@@ -23,24 +23,34 @@ import java.io.IOException;
 @Component
 public class TokenFilter extends GenericFilterBean {
 
-    @Autowired
     private UserService userService;
+    private TokenStorage tokenStorage;
+
+    @Autowired
+    public TokenFilter(UserService userService, TokenStorage tokenStorage) {
+        this.userService = userService;
+        this.tokenStorage = tokenStorage;
+    }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         String tokenHeader = httpServletRequest.getHeader("Auth-Token");
 
-        if (tokenHeader != null &&
-                tokenHeader.equals(httpServletRequest.getSession().getAttribute("securityToken"))) {
+        if (tokenHeader != null) {
+            String username = TokenUtils.getUsername(tokenHeader);
 
-            UserDetails userDetails = userService.loadUserByUsername(TokenUtils.getUsername(tokenHeader));
+            if (username != null &&
+                    tokenHeader.equals(tokenStorage.getToken(username))) {
 
-            if (userDetails != null) {
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                UserDetails userDetails = userService.loadUserByUsername(username);
+
+                if (userDetails != null) {
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
             }
         }
 

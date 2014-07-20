@@ -2,8 +2,8 @@ package com.tsykul.joggingtracker.controller;
 
 import com.tsykul.joggingtracker.model.Credentials;
 import com.tsykul.joggingtracker.model.SecurityToken;
+import com.tsykul.joggingtracker.security.TokenStorage;
 import com.tsykul.joggingtracker.security.TokenUtils;
-import com.tsykul.joggingtracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +25,7 @@ public class LoginController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private UserService userService;
+    private TokenStorage tokenStorage;
 
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
@@ -34,13 +34,17 @@ public class LoginController {
     public SecurityToken login(@RequestBody Credentials credentials, HttpServletRequest httpServletRequest) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword()));
         String token = TokenUtils.createToken(credentials.getEmail());
-        httpServletRequest.getSession().setAttribute("securityToken", token);
+        tokenStorage.putToken(credentials.getEmail(), token);
         return new SecurityToken(token);
     }
 
     @RequestMapping(value = "/logout",
             method = RequestMethod.POST)
     public void logout(HttpServletRequest httpServletRequest) {
-        httpServletRequest.getSession().removeAttribute("securityToken");
+        String token = httpServletRequest.getHeader("Auth-Token");
+        if (token != null) {
+            String username = TokenUtils.getUsername(token);
+            tokenStorage.removeToken(username);
+        }
     }
 }
