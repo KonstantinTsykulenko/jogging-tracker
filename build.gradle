@@ -47,6 +47,7 @@ dependencies {
 
     compile 'com.google.guava:guava:17.0'
 
+    testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
     testCompile("org.codehaus.groovy:groovy-all:2.2.0")
     testCompile("com.fasterxml.jackson.core:jackson-databind")
     testCompile("org.spockframework:spock-core:0.7-groovy-2.0")

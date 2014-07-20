@@ -18,8 +18,12 @@ import javax.validation.Valid;
 @RestController
 public class UserController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping(value = "/user",
             method = RequestMethod.POST,

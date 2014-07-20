@@ -15,6 +15,9 @@ public final class UserUtil {
 
     public static User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
+        }
         return (User) authentication.getPrincipal();
     }
 }

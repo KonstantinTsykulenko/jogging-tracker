@@ -21,11 +21,14 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class LoginController {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
+    private TokenStorage tokenStorage;
 
     @Autowired
-    private TokenStorage tokenStorage;
+    public LoginController(AuthenticationManager authenticationManager, TokenStorage tokenStorage) {
+        this.authenticationManager = authenticationManager;
+        this.tokenStorage = tokenStorage;
+    }
 
     @RequestMapping(value = "/login",
             method = RequestMethod.POST,
