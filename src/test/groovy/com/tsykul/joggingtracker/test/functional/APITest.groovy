@@ -21,6 +21,16 @@ class APITest extends Specification {
     @Shared
     def token
 
+    def setupSpec() {
+        try {
+            def resp = appEndpoint.post([path: 'login', requestContentType: 'application/json', body: userData])
+            appEndpoint.delete([path: 'user', requestContentType: 'application/json', 'headers': ['Auth-Token': resp.data.token]])
+        }
+        catch (Exception e) {
+            //no op
+        }
+    }
+
     def "Should be able to register a user"() {
         given:
             def req = [path: 'user', requestContentType: 'application/json', body: userData]
@@ -65,6 +75,6 @@ class APITest extends Specification {
         when:
             def resp = appEndpoint.delete([path: 'user', requestContentType: 'application/json', 'headers': ['Auth-Token': token]])
         then:
-            resp.data.status == "SUCCESS"
+            resp.status == 200
     }
 }
