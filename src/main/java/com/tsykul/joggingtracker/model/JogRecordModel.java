@@ -1,7 +1,8 @@
 package com.tsykul.joggingtracker.model;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.tsykul.joggingtracker.json.CustomDateSerializer;
+import com.tsykul.joggingtracker.json.DateSerializer;
+import com.tsykul.joggingtracker.json.SpeedSerializer;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,10 @@ import java.util.Date;
  * @since 7/16/2014.
  */
 public class JogRecordModel {
-    @JsonSerialize(using = CustomDateSerializer.class)
+    private static final int METERS_IN_KM = 1000;
+    private static final int SECONDS_IN_HR = 360;
+
+    @JsonSerialize(using = DateSerializer.class)
     @NotNull
     private Date date;
     @NotNull
@@ -21,6 +25,9 @@ public class JogRecordModel {
     @NotNull
     @Min(1)
     private Long distance;
+
+    @JsonSerialize(using = SpeedSerializer.class)
+    private Double speed;
 
     private Long id;
 
@@ -32,6 +39,11 @@ public class JogRecordModel {
         this.duration = duration;
         this.distance = distance;
         this.id = id;
+        this.speed = calculateSpeed(duration, distance);
+    }
+
+    private double calculateSpeed(Long duration, Long distance) {
+        return (double) ((double) distance / METERS_IN_KM) / ((double) duration / SECONDS_IN_HR);
     }
 
     public Date getDate() {
@@ -64,5 +76,12 @@ public class JogRecordModel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getSpeed() {
+        if (speed == null) {
+            speed = calculateSpeed(duration, distance);
+        }
+        return speed;
     }
 }

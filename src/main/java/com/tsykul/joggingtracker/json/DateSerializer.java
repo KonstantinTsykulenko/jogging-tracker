@@ -13,7 +13,7 @@ import java.util.Date;
  * @author KonstantinTsykulenko
  * @since 7/19/2014.
  */
-public class CustomDateSerializer extends JsonSerializer<Date> {
+public class DateSerializer extends JsonSerializer<Date> {
     @Override
     public void serialize(Date value, JsonGenerator jgen, SerializerProvider provider) throws IOException, JsonProcessingException {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");

@@ -67,28 +67,27 @@
                         <th>Date</th>
                         <th>Distance</th>
                         <th>Duration</th>
+                        <th>Speed</th>
                         <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
-                            <div class="row">
-                                <div class="col-md-3">
-                                    <p class="input-group">
-                                        <input type="text" class="form-control"
-                                               datepicker-popup="yyyy/MM/dd"
-                                               ng-model="record.date"
-                                               is-open="newRecordDate"
-                                               ng-required="true"
-                                               close-text="Close"/>
+                            <div class="col-md-3">
+                                <p class="input-group">
+                                    <input type="text" class="form-control"
+                                           datepicker-popup="yyyy/MM/dd"
+                                           ng-model="record.date"
+                                           is-open="newRecordDate"
+                                           ng-required="true"
+                                           close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
                                                     ng-click="open($event, 'newRecordDate')"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                           </span>
-                                    </p>
-                                </div>
+                                </p>
                             </div>
                         </td>
                         <td>
@@ -99,14 +98,15 @@
                             <input type="text" placeholder="Duration (seconds)" ng-model="record.duration"
                                    ng-required="true"/>
                         </td>
+                        <td></td>
                         <td>
                             <button class="btn btn-primary" ng-click="addRecord()"><span
                                     class="glyphicon glyphicon-plus"></span></button>
                         </td>
                     </tr>
                     <tr>
-                        <td ng-messages="record.$error">
-                            <div>
+                        <td colspan="5">
+                            <div ng-messages="record.$error">
                                 <div ng-message="validationError">
                                     <div class="alert alert-danger" role="alert"
                                          ng-repeat="validationError in record.$error.validationErrors">
@@ -123,6 +123,7 @@
                         <td>{{jogRecord.date}}</td>
                         <td>{{jogRecord.distance}} meters</td>
                         <td>{{jogRecord.duration}} seconds</td>
+                        <td>{{jogRecord.speed}} km/h</td>
                         <td>
                             <button class="btn btn-danger btn-large" ng-click="removeRecord(jogRecord.id)"><span
                                     class="glyphicon glyphicon-minus"></span></button>

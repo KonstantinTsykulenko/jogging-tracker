@@ -1,5 +1,8 @@
 package com.tsykul.joggingtracker.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.tsykul.joggingtracker.json.SpeedSerializer;
+
 import java.math.BigDecimal;
 
 /**
@@ -7,14 +10,18 @@ import java.math.BigDecimal;
  * @since 7/16/2014.
  */
 public class JoggingReportModel {
+
     private BigDecimal averageDistance;
     private BigDecimal averageTime;
     private String weekOfYear;
+    @JsonSerialize(using = SpeedSerializer.class)
+    private Double averageSpeed;
 
-    public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, String weekOfYear) {
+    public JoggingReportModel(BigDecimal averageDistance, BigDecimal averageTime, BigDecimal averageSpeed, String weekOfYear) {
         this.averageDistance = averageDistance;
         this.averageTime = averageTime;
         this.weekOfYear = weekOfYear;
+        this.averageSpeed = averageSpeed.doubleValue();
     }
 
     public BigDecimal getAverageDistance() {
@@ -39,5 +46,9 @@ public class JoggingReportModel {
 
     public void setWeekOfYear(String weekOfYear) {
         this.weekOfYear = weekOfYear;
+    }
+
+    public Double getAverageSpeed() {
+        return averageSpeed;
     }
 }

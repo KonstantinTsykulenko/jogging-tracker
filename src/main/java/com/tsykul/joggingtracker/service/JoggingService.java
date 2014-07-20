@@ -52,7 +52,7 @@ public class JoggingService {
     public List<JoggingReportModel> getReport(String userId) {
         List<Object[]> weeklyUserReport = repository.getWeeklyUserReport(userId);
         return weeklyUserReport.stream().map(val ->
-                new JoggingReportModel((BigDecimal ) val[0], (BigDecimal) val[1], (String) val[2])).
+                new JoggingReportModel((BigDecimal ) val[0], (BigDecimal) val[1], (BigDecimal) val[2], (String) val[3])).
                 collect(Collectors.toList());
     }
 
