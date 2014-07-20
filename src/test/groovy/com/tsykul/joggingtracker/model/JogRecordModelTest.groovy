@@ -9,7 +9,7 @@ import spock.lang.Specification
 class JogRecordModelTest extends Specification {
     def "Should calculate speed"() {
         given:
-            def date = new Date();
+            def date = new Date()
         expect:
             def model = new JogRecordModel(date, dur, dist, 1)
             model.speed == speed
