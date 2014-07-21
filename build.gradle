@@ -50,13 +50,13 @@ dependencies {
     }
     compile "org.springframework.boot:spring-boot-starter-jetty:$springBootVersion"
     compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
-    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
+    //compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
 
     compile "org.springframework.security:spring-security-web:$springSecurityVerson"
     compile "org.springframework.security:spring-security-config:$springSecurityVerson"
 
     compile "org.hibernate:hibernate-validator:5.0.3.Final"
-    compile "org.hsqldb:hsqldb:2.3.2"
+    //compile "org.hsqldb:hsqldb:2.3.2"
     compile "postgresql:postgresql:9.1-901-1.jdbc4"
 
     compile "com.google.guava:guava:17.0"

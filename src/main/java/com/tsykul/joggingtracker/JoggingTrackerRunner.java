@@ -1,7 +1,9 @@
 package com.tsykul.joggingtracker;
 
+import com.tsykul.joggingtracker.conf.DataSourceConfig;
 import com.tsykul.joggingtracker.conf.SSLServerProperties;
 import com.tsykul.joggingtracker.conf.WebSecurityConfig;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.ssl.SslSelectChannelConnector;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
@@ -18,6 +20,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.Assert;
 
+import javax.sql.DataSource;
+
 /**
  * @author KonstantinTsykulenko
  * @since 7/13/2014.
@@ -25,7 +29,7 @@ import org.springframework.util.Assert;
 @Configuration
 @EnableAutoConfiguration(exclude = SecurityAutoConfiguration.class)
 @ComponentScan("com.tsykul.joggingtracker")
-@EnableConfigurationProperties(SSLServerProperties.class)
+@EnableConfigurationProperties({SSLServerProperties.class, DataSourceConfig.class})
 @Import(WebSecurityConfig.class)
 public class JoggingTrackerRunner {
 
@@ -55,6 +59,20 @@ public class JoggingTrackerRunner {
                 server.addConnector(sslConnector);
             });
         };
+    }
+
+    @Bean
+    public DataSource getDataSource(DataSourceConfig dataSourceConfig) {
+        PoolProperties poolProperties = new PoolProperties();
+        poolProperties.setInitialSize(dataSourceConfig.getInitialPoolSize());
+        poolProperties.setMaxActive(dataSourceConfig.getMaxActivePoolSize());
+        org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource(poolProperties);
+        dataSource.setDriverClassName(dataSourceConfig.getDriverClassName());
+        dataSource.setUrl(dataSourceConfig.getDbUrl());
+        dataSource.setDefaultAutoCommit(false);
+        dataSource.setUsername(dataSourceConfig.getDbUsername());
+        dataSource.setPassword(dataSourceConfig.getDbPassword());
+        return dataSource;
     }
 
 }
