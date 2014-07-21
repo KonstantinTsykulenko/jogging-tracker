@@ -1,11 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        maven { url 'http://dl.bintray.com/vermeulen-mp/gradle-plugins' }
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.4.RELEASE"
-        classpath "com.wiredforcode:gradle-heroku-plugin:1.0.0"
     }
 }
 
@@ -13,19 +11,20 @@ apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'groovy'
 //apply plugin: 'jacoco'
-apply plugin: 'heroku'
-
-heroku {
-    apiKey = '35408564-78c5-4cb1-9b1b-eceef41284c7'
-
-    appName = 'jogging-tracker'
-
-    //buildpack = 'http://somebuildpack'
-}
 
 allprojects {
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
+}
+
+processResources {
+    if (project.hasProperty('dev')) {
+        rename 'dev.application.properties', 'application.properties'
+        exclude 'application.properties'
+    }
+    else {
+        exclude 'dev.application.properties'
+    }
 }
 
 applicationDefaultJvmArgs = [
@@ -70,4 +69,8 @@ task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }
 
-task stage(dependsOn: ['build'])
+build {
+    mustRunAfter 'clean'
+}
+
+task stage(dependsOn: ['clean', 'build'])
