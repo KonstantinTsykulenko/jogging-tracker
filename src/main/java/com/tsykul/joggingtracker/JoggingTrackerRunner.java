@@ -37,16 +37,16 @@ public class JoggingTrackerRunner {
     @Autowired
     public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer(
             SSLServerProperties sslServerProperties) throws Exception {
-        final String absoluteKeystoreFile =
+        final String keystorePath =
                 Thread.currentThread().getContextClassLoader().getResource(
-                        sslServerProperties.getKeystoreFile()).getPath();
+                        sslServerProperties.getKeystoreFile()).toExternalForm();
 
         return factory -> {
             Assert.state(factory instanceof JettyEmbeddedServletContainerFactory, "Use Jetty for this server");
             JettyEmbeddedServletContainerFactory jettyFactory = (JettyEmbeddedServletContainerFactory) factory;
             jettyFactory.addServerCustomizers(server -> {
                 SslContextFactory sslContextFactory = new SslContextFactory();
-                sslContextFactory.setKeyStorePath(absoluteKeystoreFile);
+                sslContextFactory.setKeyStorePath(keystorePath);
                 sslContextFactory.setKeyStorePassword(sslServerProperties.getKeystorePass());
                 sslContextFactory.setKeyStoreType(sslServerProperties.getKeystoreType());
 
