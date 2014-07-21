@@ -23,7 +23,6 @@ heroku {
     //buildpack = 'http://somebuildpack'
 }
 
-
 allprojects {
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
@@ -70,3 +69,5 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.0'
 }
+
+task stage(dependsOn: ['clean', 'installApp'])
