@@ -1,3 +1,8 @@
+ext {
+    springBootVersion = '1.1.4.RELEASE'
+    springSecurityVerson = '3.2.4.RELEASE'
+}
+
 buildscript {
     repositories {
         mavenCentral()
@@ -10,7 +15,6 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'groovy'
-//apply plugin: 'jacoco'
 
 allprojects {
     targetCompatibility = 1.8
@@ -41,28 +45,28 @@ repositories {
 }
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web") {
+    compile("org.springframework.boot:spring-boot-starter-web:$springBootVersion") {
         exclude module: "spring-boot-starter-tomcat"
     }
-    compile("org.springframework.boot:spring-boot-starter-jetty")
-    compile("org.springframework.boot:spring-boot-starter-data-jpa")
-    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile "org.springframework.boot:spring-boot-starter-jetty:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-data-jpa:$springBootVersion"
+    compile "org.springframework.boot:spring-boot-starter-actuator:$springBootVersion"
 
-    compile 'org.springframework.security:spring-security-web:3.2.4.RELEASE'
-    compile 'org.springframework.security:spring-security-config:3.2.4.RELEASE'
+    compile "org.springframework.security:spring-security-web:$springSecurityVerson"
+    compile "org.springframework.security:spring-security-config:$springSecurityVerson"
 
-    compile('org.hibernate:hibernate-validator')
-    compile('org.hsqldb:hsqldb')
-    compile 'postgresql:postgresql:9.1-901-1.jdbc4'
+    compile "org.hibernate:hibernate-validator:5.0.3.Final"
+    compile "org.hsqldb:hsqldb:2.3.2"
+    compile "postgresql:postgresql:9.1-901-1.jdbc4"
 
-    compile 'com.google.guava:guava:17.0'
+    compile "com.google.guava:guava:17.0"
 
-    testCompile 'org.springframework:spring-test:4.0.6.RELEASE'
-    testCompile("org.codehaus.groovy:groovy-all:2.2.0")
-    testCompile("com.fasterxml.jackson.core:jackson-databind")
-    testCompile("org.spockframework:spock-core:0.7-groovy-2.0")
-    testCompile("org.codehaus.groovy.modules.http-builder:http-builder:0.7+")
-    testCompile 'cglib:cglib-nodep:3.1'
+    testCompile "org.springframework:spring-test:4.0.6.RELEASE"
+    testCompile "org.codehaus.groovy:groovy-all:2.2.0"
+    testCompile "com.fasterxml.jackson.core:jackson-databind:2.3.3"
+    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    testCompile "org.codehaus.groovy.modules.http-builder:http-builder:0.7+"
+    testCompile "cglib:cglib-nodep:3.1"
 }
 
 task wrapper(type: Wrapper) {
