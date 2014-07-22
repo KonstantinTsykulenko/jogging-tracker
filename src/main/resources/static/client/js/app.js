@@ -108,12 +108,18 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             $event.preventDefault();
             $event.stopPropagation();
 
-            $scope[id] = true;
+            $scope.opened = false
+            $scope.$apply();
+            $scope.opened = true;
+        };
+
+        $scope.isOpen = function (id) {
+            return $scope.opened;
         };
 
         $scope.jogRecords = [];
 
-        $scope.refresh = function () {
+        $scope.refreshRecords = function () {
             $scope.jogRecords.$error = [];
             var jogDataPromise = $http.get("/jogRecord", {
                 "headers": {"Auth-Token": $session.token}
@@ -133,7 +139,31 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             });
         }
 
-        $scope.refresh();
+        $scope.refreshRecords();
+
+        $scope.reportData = []
+
+        $scope.refreshReport = function () {
+            $scope.reportData.$error = [];
+            var jogDataPromise = $http.get("/jogRecord/report", {
+                "headers": {"Auth-Token": $session.token}
+            });
+
+            jogDataPromise.success(function (data, status, headers, config) {
+                $scope.reportData = data;
+            });
+            jogDataPromise.error(function (data, status, headers, config) {
+                if (status == 401) {
+                    $session.destroy();
+                    $location.path("/");
+                }
+                else {
+                    $scope.reportData.$error.generalError = true;
+                }
+            });
+        }
+
+        $scope.refreshReport();
 
         $scope.addRecord = function () {
             $scope.record.$error = {};
@@ -142,7 +172,7 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             });
 
             addRecordResponse.success(function (data, status, headers, config) {
-                $scope.refresh();
+                $scope.refreshRecords();
             });
             addRecordResponse.error(function (data, status, headers, config) {
                 if (status == 400) {
@@ -164,12 +194,12 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
 
         $scope.removeRecord = function (id) {
             $scope.$removalError = {};
-            var addRecordResponse = $http.delete("/jogRecord" + id, {
+            var addRecordResponse = $http.delete("/jogRecord/" + id, {
                 "headers": {"Auth-Token": $session.token}
             });
 
             addRecordResponse.success(function (data, status, headers, config) {
-                $scope.refresh();
+                $scope.refreshRecords();
             });
             addRecordResponse.error(function (data, status, headers, config) {
                 if (status == 401) {
@@ -202,41 +232,6 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             $session.destroy();
             $location.path('/');
         }
-
-        $scope.showReport = function () {
-            $location.path('/report');
-        }
-    })
-
-    .controller('ReportController', function ($scope, $routeParams, $location, $http, $session) {
-        if (!$session.token) {
-            $location.path('/');
-            return;
-        }
-
-        $scope.reportData = []
-
-        $scope.refresh = function () {
-            $scope.reportData.$error = [];
-            var jogDataPromise = $http.get("/jogRecord/report", {
-                "headers": {"Auth-Token": $session.token}
-            });
-
-            jogDataPromise.success(function (data, status, headers, config) {
-                $scope.reportData = data;
-            });
-            jogDataPromise.error(function (data, status, headers, config) {
-                if (status == 401) {
-                    $session.destroy();
-                    $location.path("/");
-                }
-                else {
-                    $scope.reportData.$error.generalError = true;
-                }
-            });
-        }
-
-        $scope.refresh();
     })
 
     .config(function ($routeProvider) {
@@ -246,16 +241,12 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
                 controller: 'LoginController'
             })
             .when('/joggingList/', {
-                templateUrl: 'partials/recordList.html',
+                templateUrl: 'partials/tabView.html',
                 controller: 'JoggingController'
             })
             .when('/register/', {
                 templateUrl: 'partials/register.html',
                 controller: 'RegistrationController'
-            })
-            .when('/report/', {
-                templateUrl: 'partials/report.html',
-                controller: 'ReportController'
             })
             .otherwise({
                 redirectTo: '/'

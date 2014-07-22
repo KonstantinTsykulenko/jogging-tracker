@@ -1,0 +1,15 @@
+<div ng-controler="JoggingController">
+    <div class="container">
+        <ul class="nav navbar-nav navbar-right navbar-default">
+            <button class="btn btn-primary" ng-click="logout()">Logout
+            </button>
+        </ul>
+        <div class="page-header">
+            <h1>Welcome, {{userName}}</h1>
+        </div>
+        <tabset justified="true">
+            <tab heading="Records"><div ng-include src="'partials/jogRecordTab.html'"></div></tab>
+            <tab heading="Report" ng-click="refreshReport()"><div ng-include src="'partials/reportTab.html'"></div></tab>
+        </tabset>
+    </div>
+</div>
