@@ -1,0 +1,15 @@
+body {
+    padding-top: 20px;
+}
+
+a {
+    cursor: pointer;
+}
+
+.ng-inactive {
+    display: none;
+}
+
+.dateCell {
+    width: 20%;
+}

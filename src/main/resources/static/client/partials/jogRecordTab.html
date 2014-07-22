@@ -64,22 +64,20 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td>
-                        <div class="col-md-3">
-                            <p class="input-group">
-                                <input type="text" class="form-control"
-                                       datepicker-popup="yyyy/MM/dd"
-                                       ng-model="record.date"
-                                       is-open="isOpen('newDatePicker')"
-                                       ng-required="true"
-                                       close-text="Close"/>
+                    <td class="dateCell">
+                        <p class="input-group">
+                            <input type="text" class="form-control"
+                                   datepicker-popup="yyyy/MM/dd"
+                                   ng-model="record.date"
+                                   is-open="isOpen('newDatePicker')"
+                                   ng-required="true"
+                                   close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
                                                     ng-click="open($event, 'newDatePicker')"><i
                                                     class="glyphicon glyphicon-calendar"></i></button>
                                           </span>
-                            </p>
-                        </div>
+                        </p>
                     </td>
                     <td>
                         <input type="text" placeholder="Distance (meters)" ng-model="record.distance"
