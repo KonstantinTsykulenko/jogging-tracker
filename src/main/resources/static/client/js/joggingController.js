@@ -7,6 +7,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
     }
 
     $scope.record = {};
+    $scope.dateFilter = {};
     $scope.record.date = new Date();
     $scope.userName = $session.userName;
 
@@ -120,8 +121,8 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
 
     $scope.filterByDates = function (record) {
 
-        var startDate = $filter('date')($scope.startDate, 'yyyy/MM/dd');
-        var endDate = $filter('date')($scope.endDate, 'yyyy/MM/dd');
+        var startDate = $filter('date')($scope.dateFilter.startDate, 'yyyy/MM/dd');
+        var endDate = $filter('date')($scope.dateFilter.endDate, 'yyyy/MM/dd');
 
         if (record.date < startDate) {
             return false;
