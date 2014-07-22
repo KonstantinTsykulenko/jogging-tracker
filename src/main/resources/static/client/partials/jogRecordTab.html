@@ -17,7 +17,7 @@
                         <input type="text" class="form-control"
                                datepicker-popup="yyyy/MM/dd"
                                ng-model="dateFilter.startDate"
-                               is-open="isOpen('fromDatePicker')"
+                               is-open="datepickers.fromDatePicker"
                                close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
@@ -32,7 +32,7 @@
                         <input type="text" class="form-control"
                                datepicker-popup="yyyy/MM/dd"
                                ng-model="dateFilter.endDate"
-                               is-open="isOpen('toDatePicker')"
+                               is-open="datepickers.toDatePicker"
                                close-text="Close"/>
                                           <span class="input-group-btn">
                                             <button type="button" class="btn btn-default"
@@ -65,7 +65,7 @@
                             <input type="text" class="form-control"
                                    datepicker-popup="yyyy/MM/dd"
                                    ng-model="record.date"
-                                   is-open="isOpen('newDatePicker')"
+                                   is-open="datepickers.newDatePicker"
                                    ng-required="true"
                                    close-text="Close"/>
                                           <span class="input-group-btn">

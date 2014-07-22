@@ -7,6 +7,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
     }
 
     $scope.record = {};
+    $scope.datepickers = {};
     $scope.dateFilter = {};
     $scope.record.date = new Date();
     $scope.userName = $session.userName;
@@ -15,13 +16,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
         $event.preventDefault();
         $event.stopPropagation();
 
-        $scope[id] = false;
-        $scope.$apply();
-        $scope[id] = true;
-    };
-
-    $scope.isOpen = function (id) {
-        return $scope[id];
+        $scope.datepickers[id] = true;
     };
 
     $scope.jogRecords = [];
