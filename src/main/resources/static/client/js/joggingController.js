@@ -1,4 +1,6 @@
-joggingApp.controller('JoggingController', function ($scope, $routeParams, $location, $http, $session, $filter) {
+joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location', '$http', '$session', '$filter',
+    function ($scope, $routeParams, $location, $http, $session, $filter) {
+
     if (!$session.token) {
         $location.path('/');
         return;
@@ -136,5 +138,5 @@ joggingApp.controller('JoggingController', function ($scope, $routeParams, $loca
         $session.destroy();
         $location.path('/');
     }
-});
+}]);
 

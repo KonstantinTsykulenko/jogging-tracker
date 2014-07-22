@@ -1,4 +1,6 @@
-joggingApp.controller('LoginController', function ($scope, $routeParams, $location, $http, $session) {
+joggingApp.controller('LoginController', ['$scope', '$routeParams', '$location', '$http', '$session',
+    function ($scope, $routeParams, $location, $http, $session) {
+
     $scope.credentials = {};
 
     if ($session.token) {
@@ -40,4 +42,4 @@ joggingApp.controller('LoginController', function ($scope, $routeParams, $locati
     $scope.register = function () {
         $location.path('/register');
     }
-});
+}]);

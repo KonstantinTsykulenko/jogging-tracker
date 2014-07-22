@@ -1,6 +1,6 @@
 var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.bootstrap']);
 
-joggingApp.config(function ($routeProvider) {
+joggingApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/', {
             templateUrl: 'partials/login.html',
@@ -17,7 +17,7 @@ joggingApp.config(function ($routeProvider) {
         .otherwise({
             redirectTo: '/'
         })
-});
+}]);
 
 
 

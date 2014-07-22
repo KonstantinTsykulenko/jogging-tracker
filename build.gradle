@@ -9,30 +9,83 @@ buildscript {
     }
     dependencies {
         classpath "org.springframework.boot:spring-boot-gradle-plugin:1.1.4.RELEASE"
+        classpath 'com.eriwen:gradle-js-plugin:1.12.0'
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'spring-boot'
 apply plugin: 'groovy'
+apply plugin: 'js'
+
+def jsSrcDir = "${sourceSets.main.resources.srcDirs.iterator().next()}/static/client/js"
 
 allprojects {
     targetCompatibility = 1.8
     sourceCompatibility = 1.8
 }
 
+javascript.source {
+    dev {
+        js {
+            srcDir jsSrcDir
+            include "*.js"
+            exclude "*.min.js"
+        }
+    }
+    prod {
+        js {
+            srcDir jsSrcDir
+            include "*.min.js"
+        }
+    }
+}
+
+combineJs {
+    source = javascript.source.dev.js.files
+    dest = file("${buildDir}/all.js")
+}
+
+minifyJs {
+    source = combineJs
+    dest = file("${buildDir}/js/static/client/js/app.min.js")
+    sourceMap = file("${buildDir}/all.sourcemap.json")
+    closure {
+        warningLevel = 'QUIET'
+    }
+}
+
+
+if (!project.hasProperty('jsDebug')) {
+    processResources.dependsOn(['minifyJs'])
+
+    processResources.doLast {
+        copy {
+            from "${buildDir}/js"
+            into "${buildDir}/resources/main"
+        }
+    }
+}
+
 processResources {
+    if (project.hasProperty('jsDebug')) {
+        rename 'dev.index.html', 'index.html'
+        exclude 'static/client/index.html'
+    }
+    else {
+        exclude "static/client/js"
+        exclude 'static/client/dev.index.html'
+    }
     if (project.hasProperty('dev')) {
         rename 'dev.application.properties', 'application.properties'
         exclude 'application.properties'
-    }
-    else {
+    } else {
         exclude 'dev.application.properties'
     }
 }
 
 applicationDefaultJvmArgs = [
-    "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7777"
+        "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=7777"
 ]
 
 jar {

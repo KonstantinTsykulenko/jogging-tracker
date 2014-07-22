@@ -1,4 +1,6 @@
-joggingApp.controller('RegistrationController', function ($scope, $routeParams, $location, $http) {
+joggingApp.controller('RegistrationController', ['$scope', '$routeParams', '$location', '$http',
+    function ($scope, $routeParams, $location, $http) {
+
     $scope.credentials = {};
 
     $scope.register = function () {
@@ -42,5 +44,5 @@ joggingApp.controller('RegistrationController', function ($scope, $routeParams, 
             }
         });
     }
-});
+}]);
 

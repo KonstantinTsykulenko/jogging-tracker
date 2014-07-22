@@ -1,4 +1,4 @@
-joggingApp.config(function (datepickerConfig) {
+joggingApp.config(['datepickerConfig', function (datepickerConfig) {
     datepickerConfig.showWeeks = true;
     datepickerConfig.startingDay = 1
-});
+}]);
