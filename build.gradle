@@ -26,23 +26,23 @@ allprojects {
 }
 
 javascript.source {
-    dev {
+    secondary {
         js {
             srcDir jsSrcDir
             include "*.js"
-            exclude "*.min.js"
+            exclude "app.js"
         }
     }
-    prod {
+    primary {
         js {
             srcDir jsSrcDir
-            include "*.min.js"
+            include "app.js"
         }
     }
 }
 
 combineJs {
-    source = javascript.source.dev.js.files
+    source = javascript.source.primary.js.files + javascript.source.secondary.js.files
     dest = file("${buildDir}/all.js")
 }
 
