@@ -108,13 +108,13 @@ var joggingApp = angular.module('joggingApp', ['ngRoute', 'ngMessages', 'ui.boot
             $event.preventDefault();
             $event.stopPropagation();
 
-            $scope.opened = false
+            $scope[id] = false;
             $scope.$apply();
-            $scope.opened = true;
+            $scope[id] = true;
         };
 
         $scope.isOpen = function (id) {
-            return $scope.opened;
+            return $scope[id];
         };
 
         $scope.jogRecords = [];
