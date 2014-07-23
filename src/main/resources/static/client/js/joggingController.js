@@ -22,7 +22,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
     $scope.jogRecords = [];
 
     $scope.refreshRecords = function () {
-        $scope.jogRecords.$error = [];
+        $scope.jogRecords.$fetchError = [];
         var jogDataPromise = $http.get("/jogRecord", {
             "headers": {"Auth-Token": $session.token}
         });
@@ -36,7 +36,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
                 $location.search('sessionExpired', 'true').path('/');
             }
             else {
-                $scope.jogRecords.$error.generalError = true;
+                $scope.jogRecords.$fetchError.generalError = true;
             }
         });
     }
@@ -71,7 +71,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
     }
 
     $scope.removeRecord = function (id) {
-        $scope.$removalError = {};
+        $scope.jogRecords.$removalError = {};
         var addRecordResponse = $http.delete("/jogRecord/" + id, {
             "headers": {"Auth-Token": $session.token}
         });
@@ -85,7 +85,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
                 $location.search('sessionExpired', 'true').path('/');
             }
             else {
-                $scope.$removalError.removalError = true;
+                $scope.jogRecords.$removalError.removalError = true;
             }
         });
     }

@@ -1,10 +1,4 @@
 <div class="row" ng-controler="JoggingController">
-    <div ng-messages="jogRecords.$error">
-        <div class="alert alert-danger" role="alert" ng-message="generalError">Data retrieval failed</div>
-    </div>
-    <div ng-messages="$removalError">
-        <div class="alert alert-danger" role="alert" ng-message="removalError">Failed to delete record</div>
-    </div>
     <div class="row">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -90,6 +84,12 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="5" ng-if="jogRecords.$fetchError.generalError">
+                        <div class="alert alert-danger" role="alert">Data retrieval failed</div>
+                    </td>
+                    <td colspan="5" ng-messages="jogRecords.$removalError">
+                        <div class="alert alert-danger" role="alert" ng-message="removalError">Failed to delete record</div>
+                    </td>
                     <td colspan="5" ng-messages="record.$error">
                         <div ng-message="validationError">
                             <div class="alert alert-danger" role="alert"
