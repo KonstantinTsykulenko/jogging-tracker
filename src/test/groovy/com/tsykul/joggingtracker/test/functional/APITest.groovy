@@ -60,16 +60,16 @@ class APITest extends Specification {
             appEndpoint.post([path: 'jogRecord', requestContentType: 'application/json', body: record, 'headers': ['Auth-Token': token]])
         where:
             record | _
-            ['date': '2014-06-03T20:44:55', 'distance': 5000, 'duration': 240] | _
-            ['date': '2014-06-04T20:44:55', 'distance': 4800, 'duration': 300] | _
-            ['date': '2014-06-05T20:44:55', 'distance': 4900, 'duration': 360] | _
-            ['date': '2014-06-09T20:44:55', 'distance': 10000, 'duration': 360] | _
-            ['date': '2014-06-10T20:44:55', 'distance': 20000, 'duration': 360] | _
-            ['date': '2014-06-16T20:44:55', 'distance': 5000, 'duration': 160] | _
-            ['date': '2014-06-18T20:44:55', 'distance': 7000, 'duration': 180] | _
-            ['date': '2014-06-20T20:44:55', 'distance': 6000, 'duration': 200] | _
-            ['date': '2014-06-30T20:44:55', 'distance': 20000, 'duration': 720] | _
-            ['date': '2014-07-01T20:44:55', 'distance': 40000, 'duration': 720] | _
+            ['date': '2014-06-03', 'distance': 5000, 'duration': 240] | _
+            ['date': '2014-06-05', 'distance': 4900, 'duration': 360] | _
+            ['date': '2014-06-09', 'distance': 10000, 'duration': 360] | _
+            ['date': '2014-06-04', 'distance': 4800, 'duration': 300] | _
+            ['date': '2014-06-10', 'distance': 20000, 'duration': 360] | _
+            ['date': '2014-06-16', 'distance': 5000, 'duration': 160] | _
+            ['date': '2014-06-18', 'distance': 7000, 'duration': 180] | _
+            ['date': '2014-06-20', 'distance': 6000, 'duration': 200] | _
+            ['date': '2014-06-30', 'distance': 20000, 'duration': 720] | _
+            ['date': '2014-07-01', 'distance': 40000, 'duration': 720] | _
     }
 
     def "Should not be able to add jog records unauthenticated"() {
