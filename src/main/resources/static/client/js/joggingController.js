@@ -132,6 +132,7 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
 
     $scope.logout = function () {
         $session.destroy();
+        $location.$$search = {};
         $location.path('/');
     }
 }]);
