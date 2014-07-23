@@ -19,7 +19,7 @@ class JoggingServiceTest extends Specification {
             repository.findByUserId(email) >> [new JogRecord(date, 30, 3), new JogRecord(date, 20, 2), new JogRecord(date, 10, 1)]
             def service = new JoggingService(repository)
         when:
-            def records = service.findByUserId(email)
+            def records = service.findByUserId(email, Optional.empty(), Optional.empty())
         then:
             records.size() == 3
             records[0].date == date

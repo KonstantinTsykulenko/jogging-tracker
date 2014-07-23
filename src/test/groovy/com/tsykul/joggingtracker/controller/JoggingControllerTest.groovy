@@ -73,7 +73,7 @@ class JoggingControllerTest extends Specification {
         when:
             def resultActions = mockMvc.perform(get("/jogRecord"))
         then:
-            1 * service.findByUserId(_)
+            1 * service.findByUserId(_, _, _)
             resultActions
                     .andExpect(status().isOk())
     }

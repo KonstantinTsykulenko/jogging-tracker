@@ -15,8 +15,8 @@ class JogRecordModelTest extends Specification {
             model.speed == speed
         where:
             dur | dist | speed
-            360 | 5000 | 5
-            180 | 5000 | 10
+            360 | 5000 | 50
+            180 | 5000 | 100
             1   | 0    | 0
             0   | 1    | Double.POSITIVE_INFINITY
     }
