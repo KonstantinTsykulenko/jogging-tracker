@@ -1,16 +1,18 @@
 package com.tsykul.joggingtracker.controller;
 
-import com.tsykul.joggingtracker.entity.JogRecord;
 import com.tsykul.joggingtracker.entity.User;
 import com.tsykul.joggingtracker.model.JogRecordModel;
 import com.tsykul.joggingtracker.model.JoggingReportModel;
 import com.tsykul.joggingtracker.security.UserUtil;
 import com.tsykul.joggingtracker.service.JoggingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author KonstantinTsykulenko
@@ -44,9 +46,12 @@ public class JoggingController {
     @RequestMapping(value = "/jogRecord",
             method = RequestMethod.GET,
             produces = "application/json")
-    public List<JogRecordModel> getJogRecords() {
+    public List<JogRecordModel> getJogRecords(@DateTimeFormat(pattern = "yyyy/MM/dd") @RequestParam(required = false) Date from,
+                                              @DateTimeFormat(pattern = "yyyy/MM/dd") @RequestParam(required = false) Date to) {
         User user = UserUtil.getUser();
-        return service.findByUserId(user != null ? user.getEmail() : null);
+        return service.findByUserId(user != null ? user.getEmail() : null,
+                Optional.ofNullable(from),
+                Optional.ofNullable(to));
     }
 
     @RequestMapping(value = "/jogRecord/report",

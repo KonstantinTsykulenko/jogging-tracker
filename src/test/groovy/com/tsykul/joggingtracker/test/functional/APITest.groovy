@@ -111,23 +111,40 @@ class APITest extends Specification {
             def response = appEndpoint.get([path: 'jogRecord', requestContentType: 'application/json', 'headers': ['Auth-Token': token]])
         then:
             response.status == 200
-            def expected = [['duration': 720, 'date': '2014/07/01', 'distance': 40000, 'id': 422, 'speed': 20.00],
-                              ['duration': 720, 'date': '2014/06/30', 'distance': 20000, 'id': 421, 'speed': 10.00],
-                              ['duration': 200, 'date': '2014/06/20', 'distance': 6000, 'id': 420, 'speed': 10.80],
-                              ['duration': 180, 'date': '2014/06/18', 'distance': 7000, 'id': 419, 'speed': 14.00],
-                              ['duration': 160, 'date': '2014/06/16', 'distance': 5000, 'id': 418, 'speed': 11.25],
-                              ['duration': 360, 'date': '2014/06/10', 'distance': 20000, 'id': 417, 'speed': 20.00],
-                              ['duration': 360, 'date': '2014/06/09', 'distance': 10000, 'id': 416, 'speed': 10.00],
-                              ['duration': 360, 'date': '2014/06/05', 'distance': 4900, 'id': 415, 'speed': 4.90],
-                              ['duration': 300, 'date': '2014/06/04', 'distance': 4800, 'id': 414, 'speed': 5.76],
-                              ['duration': 240, 'date': '2014/06/03', 'distance': 5000, 'id': 413, 'speed': 7.50]]
-            def zipped = [response.data, expected].transpose()
-            zipped.forEach {
-                it[0]['duration'] == it[1]['duration']
-                it[0]['date'] == it[1]['date']
-                it[0]['distance'] == it[1]['distance']
-                it[0]['speed'] == it[1]['speed']
-            }
+            response.data.size == 10
+    }
+
+    def "Should be able to filter jog records from"() {
+        when:
+            def response = appEndpoint.get([path: 'jogRecord',
+                                            requestContentType: 'application/json',
+                                            'headers': ['Auth-Token': token],
+                                            'query': ['from': '2014/06/09']])
+        then:
+            response.status == 200
+            response.data.size == 7
+    }
+
+    def "Should be able to filter jog records to"() {
+        when:
+            def response = appEndpoint.get([path: 'jogRecord',
+                                            requestContentType: 'application/json',
+                                            'headers': ['Auth-Token': token],
+                                            'query': ['to': '2014/06/17']])
+        then:
+            response.status == 200
+            response.data.size == 6
+    }
+
+    def "Should be able to filter jog records from to"() {
+        when:
+            def response = appEndpoint.get([path: 'jogRecord',
+                                            requestContentType: 'application/json',
+                                            'headers': ['Auth-Token': token],
+                                            'query': ['from': '2014/06/09', 'to': '2014/06/17']])
+        then:
+            response.status == 200
+            response.data.size == 3
     }
 
     def "Should not be able to get jog records unauthenticated"() {

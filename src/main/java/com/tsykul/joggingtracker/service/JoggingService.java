@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -44,8 +46,22 @@ public class JoggingService {
     }
 
     @Transactional
-    public List<JogRecordModel> findByUserId(String userId) {
-        List<JogRecord> jogRecords = repository.findByUserId(userId);
+    public List<JogRecordModel> findByUserId(String userId, Optional<Date> from, Optional<Date> to) {
+        List<JogRecord> jogRecords;
+
+        if (from.isPresent() && !to.isPresent()) {
+            jogRecords = repository.findByUserIdFrom(userId, from.get());
+        }
+        else if (!from.isPresent() && to.isPresent()) {
+            jogRecords = repository.findByUserIdTo(userId, to.get());
+        }
+        else if (from.isPresent() && to.isPresent()) {
+            jogRecords = repository.findByUserIdFromTo(userId, from.get(), to.get());
+        }
+        else {
+            jogRecords = repository.findByUserId(userId);
+        }
+
         return jogRecords.stream().map(record -> new JogRecordModel(record.getDate(),
                 record.getDuration(),
                 record.getDistance(),
