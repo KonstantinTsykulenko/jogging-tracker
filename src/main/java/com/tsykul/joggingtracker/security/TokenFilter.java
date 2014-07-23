@@ -3,6 +3,7 @@ package com.tsykul.joggingtracker.security;
 import com.tsykul.joggingtracker.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -15,6 +16,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Collections;
 
 /**
  * @author KonstantinTsykulenko
@@ -47,7 +49,8 @@ public class TokenFilter extends GenericFilterBean {
 
                 if (userDetails != null) {
                     UsernamePasswordAuthenticationToken authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword());
+                            new UsernamePasswordAuthenticationToken(userDetails, userDetails.getPassword(),
+                                    Collections.<GrantedAuthority>emptyList());
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }

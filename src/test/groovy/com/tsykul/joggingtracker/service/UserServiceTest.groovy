@@ -19,7 +19,7 @@ class UserServiceTest extends Specification {
             def password = "password"
             userRepository.findOne(email) >> null
             userRepository.save(_) >> new User(email, password)
-            def userService = new UserServiceImpl(userRepository)
+            def userService = new UserServiceImpl(userRepository, passwordEncoder)
         when:
             def user = userService.saveUser(new Credentials(email, password))
         then:
@@ -33,7 +33,7 @@ class UserServiceTest extends Specification {
             def email = "test@gmail.com"
             def password = "password"
             userRepository.findOne(email) >> new User(email, password)
-            def userService = new UserServiceImpl(userRepository)
+            def userService = new UserServiceImpl(userRepository, passwordEncoder)
         when:
             userService.saveUser(new Credentials(email, password))
         then:
@@ -46,7 +46,7 @@ class UserServiceTest extends Specification {
             def email = "test@gmail.com"
             def password = "password"
             userRepository.findOne(email) >> new User(email, password)
-            def userService = new UserServiceImpl(userRepository)
+            def userService = new UserServiceImpl(userRepository, passwordEncoder)
         when:
             def user = userService.loadUserByUsername(email)
         then:
@@ -59,7 +59,7 @@ class UserServiceTest extends Specification {
             def userRepository = Mock(UserRepository)
             def email = "test@gmail.com"
             userRepository.findOne(email) >> null
-            def userService = new UserServiceImpl(userRepository)
+            def userService = new UserServiceImpl(userRepository, passwordEncoder)
         when:
             userService.loadUserByUsername(email)
         then:

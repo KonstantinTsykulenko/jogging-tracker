@@ -34,7 +34,7 @@ public class LoginController {
             method = RequestMethod.POST,
             consumes = "application/json",
             produces = "application/json")
-    public SecurityToken login(@RequestBody Credentials credentials, HttpServletRequest httpServletRequest) {
+    public SecurityToken login(@RequestBody Credentials credentials) {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword()));
         String token = TokenUtils.createToken(credentials.getEmail());
         tokenStorage.putToken(credentials.getEmail(), token);

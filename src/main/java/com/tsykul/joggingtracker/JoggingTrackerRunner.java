@@ -18,6 +18,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.util.Assert;
 
 import javax.sql.DataSource;
@@ -73,6 +75,12 @@ public class JoggingTrackerRunner {
         dataSource.setUsername(dataSourceConfig.getDbUsername());
         dataSource.setPassword(dataSourceConfig.getDbPassword());
         return dataSource;
+    }
+
+
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 }
