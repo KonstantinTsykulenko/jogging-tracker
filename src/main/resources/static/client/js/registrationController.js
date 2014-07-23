@@ -23,10 +23,6 @@ joggingApp.controller('RegistrationController', ['$scope', '$routeParams', '$loc
             if (status == 409) {
                 $scope.credentials.$error.userExists = true;
             }
-            else if (status == 401) {
-                $session.destroy();
-                $location.path("/");
-            }
             else if (status == 400 && data.errors) {
                 data.errors.forEach(function (error) {
                     if (error.field == 'email') {

@@ -31,9 +31,9 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
             $scope.jogRecords = data;
         });
         jogDataPromise.error(function (data, status, headers, config) {
-            if (status == 401) {
+            if (status == 403) {
                 $session.destroy();
-                $location.path("/");
+                $location.search('sessionExpired', 'true').path('/');
             }
             else {
                 $scope.jogRecords.$error.generalError = true;
@@ -60,9 +60,9 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
                     $scope.record.$error.validationErrors.push(error.field + ' ' + error.error);
                 });
             }
-            else if (status == 401) {
+            else if (status == 403) {
                 $session.destroy();
-                $location.path("/");
+                $location.search('sessionExpired', 'true').path('/');
             }
             else {
                 $scope.record.$error.genericError = true;
@@ -80,9 +80,9 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
             $scope.refreshRecords();
         });
         addRecordResponse.error(function (data, status, headers, config) {
-            if (status == 401) {
+            if (status == 403) {
                 $session.destroy();
-                $location.path("/");
+                $location.search('sessionExpired', 'true').path('/');
             }
             else {
                 $scope.$removalError.removalError = true;
@@ -102,9 +102,9 @@ joggingApp.controller('JoggingController',['$scope', '$routeParams', '$location'
             $scope.reportData = data;
         });
         jogDataPromise.error(function (data, status, headers, config) {
-            if (status == 401) {
+            if (status == 403) {
                 $session.destroy();
-                $location.path("/");
+                $location.search('sessionExpired', 'true').path('/');
             }
             else {
                 $scope.reportData.$error.generalError = true;

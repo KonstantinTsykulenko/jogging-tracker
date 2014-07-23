@@ -29,7 +29,7 @@ public interface JogRecordRepository extends JpaRepository<JogRecord, Long>{
                                               @Param("to") Date to);
 
     @Query(nativeQuery = true,
-            value = "select avg(distance) as avgDistance, avg(duration) as avgDuration, (sum(distance) / 1000) / (sum(duration) / 360) as avgSpeed, CAST(EXTRACT(YEAR FROM date) AS VARCHAR)|| '-' || CAST(EXTRACT(WEEK FROM date) AS VARCHAR) AS week from jog_record where user_id = :userId group by week order by week desc")
+            value = "select avg(distance) as avgDistance, avg(duration) as avgDuration, (sum(distance) / 1000) / (sum(duration) / 3600) as avgSpeed, CAST(EXTRACT(YEAR FROM date) AS VARCHAR)|| '-' || CAST(EXTRACT(WEEK FROM date) AS VARCHAR) AS week from jog_record where user_id = :userId group by week order by week desc")
     public List<Object[]> getWeeklyUserReport(@Param("userId") String userId);
 
     @Modifying

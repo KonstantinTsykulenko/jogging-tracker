@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class JogRecordModel {
     private static final int METERS_IN_KM = 1000;
-    private static final int SECONDS_IN_HR = 360;
+    private static final int SECONDS_IN_HR = 3600;
 
     @JsonSerialize(using = DateSerializer.class)
     @NotNull
