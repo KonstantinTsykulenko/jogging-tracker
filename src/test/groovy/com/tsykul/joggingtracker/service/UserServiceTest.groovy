@@ -5,6 +5,7 @@ import com.tsykul.joggingtracker.exception.UserExistsException
 import com.tsykul.joggingtracker.model.Credentials
 import com.tsykul.joggingtracker.repository.UserRepository
 import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.password.PasswordEncoder
 import spock.lang.Specification
 
 /**
@@ -15,6 +16,7 @@ class UserServiceTest extends Specification {
     def "Should save a non existing user"() {
         given:
             def userRepository = Mock(UserRepository)
+            def passwordEncoder = Mock(PasswordEncoder)
             def email = "test@gmail.com"
             def password = "password"
             userRepository.findOne(email) >> null
@@ -30,6 +32,7 @@ class UserServiceTest extends Specification {
     def "Should not save an existing user"() {
         given:
             def userRepository = Mock(UserRepository)
+            def passwordEncoder = Mock(PasswordEncoder)
             def email = "test@gmail.com"
             def password = "password"
             userRepository.findOne(email) >> new User(email, password)
@@ -43,6 +46,7 @@ class UserServiceTest extends Specification {
     def "Should load an existing user"() {
         given:
             def userRepository = Mock(UserRepository)
+            def passwordEncoder = Mock(PasswordEncoder)
             def email = "test@gmail.com"
             def password = "password"
             userRepository.findOne(email) >> new User(email, password)
@@ -57,6 +61,7 @@ class UserServiceTest extends Specification {
     def "Should throw exception when loading non existing user"() {
         given:
             def userRepository = Mock(UserRepository)
+            def passwordEncoder = Mock(PasswordEncoder)
             def email = "test@gmail.com"
             userRepository.findOne(email) >> null
             def userService = new UserServiceImpl(userRepository, passwordEncoder)
